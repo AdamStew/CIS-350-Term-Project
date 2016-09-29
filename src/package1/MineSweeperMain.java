@@ -3,7 +3,7 @@ package package1;
 /**
  * 
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
- * @version Beta 1.01
+ * @version 1.0
  *
  */
 
