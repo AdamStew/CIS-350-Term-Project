@@ -1,5 +1,4 @@
 package package1;
-//Hello
 /*****************************************************************
  * 
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
@@ -10,11 +9,12 @@ package package1;
 
 public class Cell {
 
-	private int neighborCount;
-	private boolean isFlagged;
-	private boolean isExposed;
-	private boolean isMine;
+  private int neighborCount;
+  private boolean isFlagged;
+  private boolean isExposed;
+  private boolean isMine;
 
+  
 	/*****************************************************************
 	 * A constructor that initializes a default cell
 	 *****************************************************************/
@@ -24,7 +24,7 @@ public class Cell {
 		this.isExposed = false;
 		this.isMine = false;
 	}
-
+	
 	/*****************************************************************
 	 * A constructor that initializes a cell based on the parameters
 	 * 
@@ -60,7 +60,7 @@ public class Cell {
 	public void setExposed(boolean exposed) {
 		this.isExposed = exposed;
 	}
-
+	
 	/*****************************************************************
 	 * Returns the mine status of the cell
 	 *****************************************************************/
@@ -112,12 +112,4 @@ public class Cell {
 	public void zeroNeighborCount() {
 		neighborCount = 0;
 	}
-
-	/*****************************************************************
-	 * Returns the neighbor count of the cell
-	 *****************************************************************/
-	public int getNeighbors() {
-		return neighborCount;
-	}
-
 }
