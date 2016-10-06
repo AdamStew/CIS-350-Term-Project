@@ -6,7 +6,7 @@ package package1;
  * @version 1.0
  * 
  *****************************************************************/
-
+//hello
 public class Cell {
 
   private int neighborCount;
