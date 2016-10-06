@@ -112,4 +112,13 @@ public class Cell {
 	public void zeroNeighborCount() {
 		neighborCount = 0;
 	}
+	
+	/*****************************************************************
+	 * Returns the neighbor count of the cell.
+	 * 
+	 * @return An integer of the neighbor count.
+	 ****************************************************************/
+	public int getNeighbors() {
+	  return neighborCount;
+	}
 }
