@@ -7,7 +7,7 @@ package package1;
  * @version 1.0
  * 
  *****************************************************************/
-//hellob
+
 public class Cell {
 
   private int neighborCount;
