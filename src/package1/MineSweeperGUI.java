@@ -93,7 +93,7 @@ public class MineSweeperGUI extends JPanel {
 	/**
 	 * A method that is called when a button is clicked.
 	 */
-	private class ButtonListener implements ActionListener, MouseListener {
+	private static class ButtonListener implements ActionListener, MouseListener {
 		public void actionPerformed(ActionEvent event) {
 		}
 
