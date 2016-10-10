@@ -11,7 +11,12 @@ import javax.swing.JFrame;
 
 public class MineSweeperMain {
 
-  public static void main(String args[]) {
+  /**
+   * Main method that displays the game.
+   * 
+   * @param args
+   */
+  public static void main(String[] args) {
     JFrame frame = new JFrame("Mine Sweeper");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
