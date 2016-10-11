@@ -1,4 +1,4 @@
-package package1;
+package minesweeperpackage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,7 +25,7 @@ import javax.swing.JPanel;
  * 
  */
 
-public class MineSweeperGUI extends JPanel {
+public class MineSweeperGui extends JPanel {
   private JButton[][] board;
   private Cell cell;
   private JButton quitButton;
@@ -41,7 +41,7 @@ public class MineSweeperGUI extends JPanel {
   /**
    * Constructor initializing game and GUI.
    */
-  public MineSweeperGUI() {
+  public MineSweeperGui() {
     game = new MineSweeperGame();
 
     smiley = new ImageIcon("smiley.gif");
@@ -93,25 +93,26 @@ public class MineSweeperGUI extends JPanel {
   }
 
   /**
-   * A method that displays the game board
+   * A method that displays the game board.
    */
   private void display() {
-    for (int row = 0; row < game.getRows(); row++)
+    for (int row = 0; row < game.getRows(); row++) {
 
       for (int col = 0; col < game.getCols(); col++) {
-        Cell iCell = new Cell();
-        iCell = game.getCell(row, col);
+        Cell cell2 = new Cell();
+        cell2 = game.getCell(row, col);
 
-        if (iCell.isExposed()) {
+        if (cell2.isExposed()) {
           board[row][col].setEnabled(false);
 
-        } else
+        } else {
 
           board[row][col].setEnabled(true);
+        }
 
-        if (iCell.isExposed()) {
+        if (cell2.isExposed()) {
           int nc = game.getNeighborCount(row, col);
-          if (iCell.isMine()) {
+          if (cell2.isMine()) {
             board[row][col].setIcon(mine);
 
           } else {
@@ -120,10 +121,11 @@ public class MineSweeperGUI extends JPanel {
           }
         }
       }
+    }
   }
 
   /**
-   * A method that resets the button text
+   * A method that resets the button text.
    */
   private void resetButtonText() {
     for (int row = 0; row < game.getRows(); row++) {
@@ -157,16 +159,12 @@ public class MineSweeperGUI extends JPanel {
           }
         }
 
-        if (buttonPressed == resetButton)
-
-        {
+        if (buttonPressed == resetButton) {
           game.reset();
           resetButtonText();
         }
 
-        if (buttonPressed == quitButton)
-
-        {
+        if (buttonPressed == quitButton) {
           int response = JOptionPane.showConfirmDialog(null,
               "Are you sure you want to quit the game?", "Quit", JOptionPane.YES_NO_OPTION);
           if (response == JOptionPane.YES_OPTION) {
@@ -193,11 +191,35 @@ public class MineSweeperGUI extends JPanel {
 
     }
 
-    public void mousePressed(MouseEvent e) {
+    @Override
+    public void mouseClicked(MouseEvent event) {
+      // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent event) {
+      // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent event) {
+      // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent event) {
+      // TODO Auto-generated method stub
+
+    }
+
+    public void mousePressed(MouseEvent event) {
       for (int row = 0; row < game.getRows(); row++) {
         for (int col = 0; col < game.getCols(); col++) {
-          if (e.getButton() == MouseEvent.BUTTON3) {
-            if (board[row][col] == e.getSource()) {
+          if (event.getButton() == MouseEvent.BUTTON3) {
+            if (board[row][col] == event.getSource()) {
               if (game.checkFlagged(row, col) == false) {
                 game.flag(row, col);
                 board[row][col].setIcon(flag);
@@ -210,72 +232,5 @@ public class MineSweeperGUI extends JPanel {
         }
       }
     }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-      // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-      // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-      // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-      // TODO Auto-generated method stub
-
-    }
-
-  }
-
-  public void mousePressed(MouseEvent e) {
-    for (int row = 0; row < game.getRows(); row++) {
-      for (int col = 0; col < game.getCols(); col++) {
-        if (e.getButton() == MouseEvent.BUTTON3) {
-          if (board[row][col] == e.getSource()) {
-            if (game.checkFlagged(row, col) == false) {
-              game.flag(row, col);
-              board[row][col].setIcon(flag);
-            } else {
-              game.unflag(row, col);
-              board[row][col].setIcon(null);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // @Override
-  public void mouseClicked(MouseEvent arg0) {
-    // TODO Auto-generated method stub
-
-  }
-
-  // @Override
-  public void mouseEntered(MouseEvent arg0) {
-    // TODO Auto-generated method stub
-
-  }
-
-  // @Override
-  public void mouseExited(MouseEvent arg0) {
-    // TODO Auto-generated method stub
-
-  }
-
-  // @Override
-  public void mouseReleased(MouseEvent arg0) {
-    // TODO Auto-generated method stub
-
   }
 }

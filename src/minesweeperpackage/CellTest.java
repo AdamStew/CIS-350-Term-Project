@@ -1,6 +1,7 @@
-package package1;
+package minesweeperpackage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -28,21 +29,25 @@ public class CellTest {
     assertEquals(false, testCell.isExposed());
   }
 
+  @Test
   public void setMineTest() {
     testCell.setMine(true);
     assertEquals(true, testCell.isMine());
   }
 
+  @Test
   public void setExposedTest() {
     testCell.setExposed(true);
     assertEquals(true, testCell.isExposed());
   }
 
+  @Test
   public void setFlaggedTest() {
     testCell.setFlagged(true);
     assertEquals(true, testCell.isFlagged());
   }
 
+  @Test
   public void cellConstructorTest() {
     Cell testCell2 = new Cell(10, false, false, true);
     assertEquals(false, testCell2.isFlagged());

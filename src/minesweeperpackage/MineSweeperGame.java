@@ -1,4 +1,4 @@
-package package1;
+package minesweeperpackage;
 
 import java.util.Random;
 
@@ -106,7 +106,6 @@ public class MineSweeperGame {
    * @return An integer value of the total amount of mines surrounding a given cell.
    ****************************************************************/
   public int getNeighborCount(int row, int col) {
-    int neighborCount = 0;
     board[row][col].zeroNeighborCount();
     // upper left square
     if ((row - 1 < getRows() && row - 1 >= 0) && (col - 1 < getCols() && col - 1 >= 0)) {
@@ -156,7 +155,7 @@ public class MineSweeperGame {
         board[row][col].addNeighbors(1);
       }
     }
-    neighborCount = board[row][col].getNeighbors();
+    int neighborCount = board[row][col].getNeighbors();
 
     return neighborCount;
   }
@@ -255,7 +254,7 @@ public class MineSweeperGame {
   }
 
   /*****************************************************************
-   * A method that returns the current game status
+   * A method that returns the current game status.
    *****************************************************************/
   public int getGameStatus() {
     int count = 0;
