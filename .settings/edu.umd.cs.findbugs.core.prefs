@@ -1,5 +1,9 @@
 #FindBugs User Preferences
+<<<<<<< HEAD
+#Fri Oct 07 10:08:58 EDT 2016
+=======
 #Fri Oct 07 10:17:43 EDT 2016
+>>>>>>> refs/remotes/origin/master
 cloud_id=edu.umd.cs.findbugs.cloud.doNothingCloud
 detectorAppendingToAnObjectOutputStream=AppendingToAnObjectOutputStream|true
 detectorAtomicityProblem=AtomicityProblem|true
