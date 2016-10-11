@@ -12,7 +12,9 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -24,107 +26,256 @@ import javax.swing.JPanel;
  */
 
 public class MineSweeperGUI extends JPanel {
-	private JButton[][] board;
-	private Cell cell;
-	private JButton quitButton;
-	private JButton resetButton;
-	private JButton minesButton;
-	private JPanel buttonPanel;
-	private JPanel gamePanel;
-	private ImageIcon smiley;
-	private ImageIcon mine;
-	private ImageIcon flag;
-	private MineSweeperGame game;
+  private JButton[][] board;
+  private Cell cell;
+  private JButton quitButton;
+  private JButton resetButton;
+  private JButton minesButton;
+  private JPanel buttonPanel;
+  private JPanel gamePanel;
+  private ImageIcon smiley;
+  private ImageIcon mine;
+  private ImageIcon flag;
+  private MineSweeperGame game;
 
-	/**
-	 * Constructor initializing game and GUI.
-	 */
-	public MineSweeperGUI() {
-		game = new MineSweeperGame();
+  /**
+   * Constructor initializing game and GUI.
+   */
+  public MineSweeperGUI() {
+    game = new MineSweeperGame();
 
-		smiley = new ImageIcon("smiley.gif");
-		mine = new ImageIcon("mine.jpg");
-		flag = new ImageIcon("flag.png");
+    smiley = new ImageIcon("smiley.gif");
+    mine = new ImageIcon("mine.jpg");
+    flag = new ImageIcon("flag.png");
 
-		quitButton = new JButton("Quit");
-		quitButton.setFont(new Font("Arial", Font.PLAIN, 10));
-		quitButton.addActionListener(new ButtonListener());
+    quitButton = new JButton("Quit");
+    quitButton.setFont(new Font("Arial", Font.PLAIN, 10));
+    quitButton.addActionListener(new ButtonListener());
 
-		resetButton = new JButton(smiley);
-		resetButton.addActionListener(new ButtonListener());
+    resetButton = new JButton(smiley);
+    resetButton.addActionListener(new ButtonListener());
 
-		minesButton = new JButton("Mines");
-		minesButton.addActionListener(new ButtonListener());
-		minesButton.setFont(new Font("Arial", Font.PLAIN, 10));
+    minesButton = new JButton("Mines");
+    minesButton.addActionListener(new ButtonListener());
+    minesButton.setFont(new Font("Arial", Font.PLAIN, 10));
 
-		buttonPanel = new JPanel();
-		buttonPanel.add(quitButton);
-		buttonPanel.add(resetButton);
-		buttonPanel.add(minesButton);
+    buttonPanel = new JPanel();
+    buttonPanel.add(quitButton);
+    buttonPanel.add(resetButton);
+    buttonPanel.add(minesButton);
 
-		gamePanel = new JPanel();
-		gamePanel.setLayout(new GridLayout(game.getRows(), game.getCols()));
-		gamePanel.setBackground(Color.gray);
-		board = new JButton[game.getRows()][game.getCols()];
-		createButtons();
-		setLayout(new BorderLayout());
-		add(buttonPanel, BorderLayout.NORTH);
-		add(gamePanel, BorderLayout.CENTER);
+    gamePanel = new JPanel();
+    gamePanel.setLayout(new GridLayout(game.getRows(), game.getCols()));
+    gamePanel.setBackground(Color.gray);
+    board = new JButton[game.getRows()][game.getCols()];
+    createButtons();
+    setLayout(new BorderLayout());
+    add(buttonPanel, BorderLayout.NORTH);
+    add(gamePanel, BorderLayout.CENTER);
 
-	}
+  }
 
-	/**
-	 * A method to create the grid of buttons.
-	 */
-	private void createButtons() {
-		for (int row = 0; row < game.getRows(); row++) {
-			for (int col = 0; col < game.getCols(); col++) {
-				// cannot be enabled with ImageIcon
-				board[row][col] = new JButton();
-				board[row][col].setPreferredSize(new Dimension(40, 40));
-				board[row][col].addActionListener(new ButtonListener());
-				board[row][col].addMouseListener(new ButtonListener());
-				gamePanel.add(board[row][col]);
+  /**
+   * A method to create the grid of buttons.
+   */
+  private void createButtons() {
+    for (int row = 0; row < game.getRows(); row++) {
+      for (int col = 0; col < game.getCols(); col++) {
+        // cannot be enabled with ImageIcon
+        board[row][col] = new JButton();
+        board[row][col].setPreferredSize(new Dimension(40, 40));
+        board[row][col].addActionListener(new ButtonListener());
+        board[row][col].addMouseListener(new ButtonListener());
+        gamePanel.add(board[row][col]);
 
-			}
-		}
-	}
+      }
+    }
+  }
 
-	/**
-	 * A method that is called when a button is clicked.
-	 */
-	private static class ButtonListener implements ActionListener, MouseListener {
-		public void actionPerformed(ActionEvent event) {
-		}
+  /**
+   * A method that displays the game board
+   */
+  private void display() {
+    for (int row = 0; row < game.getRows(); row++)
 
-		@Override
-		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+      for (int col = 0; col < game.getCols(); col++) {
+        Cell iCell = new Cell();
+        iCell = game.getCell(row, col);
 
-		}
+        if (iCell.isExposed()) {
+          board[row][col].setEnabled(false);
 
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+        } else
 
-		}
+          board[row][col].setEnabled(true);
 
-		@Override
-		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+        if (iCell.isExposed()) {
+          int nc = game.getNeighborCount(row, col);
+          if (iCell.isMine()) {
+            board[row][col].setIcon(mine);
 
-		}
+          } else {
+            board[row][col].setText("" + nc);
+            board[row][col].setFont(new Font("Arial", Font.PLAIN, 11));
+          }
+        }
+      }
+  }
 
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+  /**
+   * A method that resets the button text
+   */
+  private void resetButtonText() {
+    for (int row = 0; row < game.getRows(); row++) {
+      for (int col = 0; col < game.getCols(); col++) {
+        board[row][col].setText("");
+        board[row][col].setIcon(null);
+      }
+    }
+  }
 
-		}
+  /**
+   * A method that is called when a button is clicked.
+   */
+  private class ButtonListener implements ActionListener, MouseListener {
+    public void actionPerformed(ActionEvent event) {
 
-		@Override
-		public void mouseReleased(MouseEvent arg0) {
-			// TODO Auto-generated method stub
+      JComponent buttonPressed = (JComponent) event.getSource();
 
-		}
-	}
+      for (int row = 0; row < game.getRows(); row++) {
+        for (int col = 0; col < game.getCols(); col++) {
+          if (board[row][col] == event.getSource() && game.checkFlagged(row, col) == false) {
+            game.select(row, col);
+            game.flood(row, col);
+            if (game.getGameStatus() == 0) {
+              JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
+            } else if (game.getGameStatus() == 1) {
+              JOptionPane.showMessageDialog(null, "Congratulations! You won the game.");
+
+            }
+
+          }
+        }
+
+        if (buttonPressed == resetButton)
+
+        {
+          game.reset();
+          resetButtonText();
+        }
+
+        if (buttonPressed == quitButton)
+
+        {
+          int response = JOptionPane.showConfirmDialog(null,
+              "Are you sure you want to quit the game?", "Quit", JOptionPane.YES_NO_OPTION);
+          if (response == JOptionPane.YES_OPTION) {
+            System.exit(1);
+          } else {
+            return;
+          }
+
+        }
+
+        if (buttonPressed == minesButton) {
+          for (int row2 = 0; row2 < game.getRows(); row2++) {
+            for (int col2 = 0; col2 < game.getCols(); col2++) {
+              cell = game.getCell(row2, col2);
+              if (cell.isMine()) {
+                board[row2][col2].setIcon(mine);
+              }
+            }
+          }
+        }
+        display();
+
+      }
+
+    }
+
+    public void mousePressed(MouseEvent e) {
+      for (int row = 0; row < game.getRows(); row++) {
+        for (int col = 0; col < game.getCols(); col++) {
+          if (e.getButton() == MouseEvent.BUTTON3) {
+            if (board[row][col] == e.getSource()) {
+              if (game.checkFlagged(row, col) == false) {
+                game.flag(row, col);
+                board[row][col].setIcon(flag);
+              } else {
+                game.unflag(row, col);
+                board[row][col].setIcon(null);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+      // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+      // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+      // TODO Auto-generated method stub
+
+    }
+
+  }
+
+  public void mousePressed(MouseEvent e) {
+    for (int row = 0; row < game.getRows(); row++) {
+      for (int col = 0; col < game.getCols(); col++) {
+        if (e.getButton() == MouseEvent.BUTTON3) {
+          if (board[row][col] == e.getSource()) {
+            if (game.checkFlagged(row, col) == false) {
+              game.flag(row, col);
+              board[row][col].setIcon(flag);
+            } else {
+              game.unflag(row, col);
+              board[row][col].setIcon(null);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // @Override
+  public void mouseClicked(MouseEvent arg0) {
+    // TODO Auto-generated method stub
+
+  }
+
+  // @Override
+  public void mouseEntered(MouseEvent arg0) {
+    // TODO Auto-generated method stub
+
+  }
+
+  // @Override
+  public void mouseExited(MouseEvent arg0) {
+    // TODO Auto-generated method stub
+
+  }
+
+  // @Override
+  public void mouseReleased(MouseEvent arg0) {
+    // TODO Auto-generated method stub
+
+  }
 }

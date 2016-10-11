@@ -1,4 +1,5 @@
 package package1;
+
 import java.util.Random;
 
 /**********************************************************************
@@ -251,5 +252,28 @@ public class MineSweeperGame {
     } else {
       return false;
     }
+  }
+
+  /*****************************************************************
+   * A method that returns the current game status
+   *****************************************************************/
+  public int getGameStatus() {
+    int count = 0;
+    for (int row = 0; row < getRows(); row++) {
+      for (int col = 0; col < getCols(); col++) {
+        if (board[row][col].isMine() && board[row][col].isExposed()) {
+          return 0;
+        } else if (board[row][col].isExposed()) {
+          count++;
+        }
+      }
+
+      int nonMines = (this.rows * this.cols) - getMineCount();
+      if (count == nonMines) {
+        return 1;
+      }
+
+    }
+    return -1;
   }
 }
