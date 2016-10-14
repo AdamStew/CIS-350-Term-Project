@@ -14,8 +14,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.MenuElement;
 
 /**
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
@@ -25,7 +27,7 @@ import javax.swing.JPanel;
  * 
  */
 
-public class MineSweeperGui extends JPanel {
+public class MineSweeperGui<JMenuBar> extends JPanel {
   private JButton[][] board;
   private Cell cell;
   private JButton quitButton;

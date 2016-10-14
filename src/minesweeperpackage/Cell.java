@@ -6,7 +6,7 @@ package minesweeperpackage;
  * 
  * @version 1.0
  * 
- *****************************************************************/
+ */
 
 public class Cell {
 
@@ -25,7 +25,7 @@ public class Cell {
     this.isMine = false;
   }
 
-  /*****************************************************************
+  /**
    * A constructor that initializes a cell based on the parameters.
    * 
    * @param mineCount
@@ -36,7 +36,7 @@ public class Cell {
    *          the desired exposure status
    * @param isMine
    *          the desired mine status
-   *****************************************************************/
+   */
   public Cell(int mineCount, boolean isFlagged, boolean isExposed, boolean isMine) {
     this.neighborCount = mineCount;
     this.isFlagged = isFlagged;
@@ -56,7 +56,7 @@ public class Cell {
    * 
    * @param exposed
    *          a boolean value determining exposure
-   *****************************************************************/
+   */
   public void setExposed(boolean exposed) {
     this.isExposed = exposed;
   }
@@ -68,12 +68,12 @@ public class Cell {
     return this.isMine;
   }
 
-  /*****************************************************************
+  /**
    * Sets the mine status of the cell.
    * 
    * @param mine
    *          a boolean value determining mine status
-   *****************************************************************/
+   */
   public boolean setMine(boolean mine) {
     this.isMine = mine;
     return this.isMine;
@@ -86,22 +86,22 @@ public class Cell {
     return this.isFlagged;
   }
 
-  /*****************************************************************
+  /**
    * Sets the flag status of the cell.
    * 
    * @param flagged
    *          a boolean value determining flag status
-   *****************************************************************/
+   */
   public void setFlagged(boolean flagged) {
     this.isFlagged = flagged;
   }
 
-  /*****************************************************************
+  /**
    * Increments the cell's neighbor count.
    * 
    * @param neighbors
    *          number of neighbors to increment
-   *****************************************************************/
+   */
   public void addNeighbors(int neighbors) {
     neighborCount += neighbors;
   }
@@ -112,7 +112,7 @@ public class Cell {
   public void zeroNeighborCount() {
     neighborCount = 0;
   }
-  
+
   /*****************************************************************
    * Returns the neighbor count of the cell.
    *****************************************************************/
