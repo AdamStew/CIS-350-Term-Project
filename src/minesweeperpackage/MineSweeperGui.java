@@ -142,6 +142,9 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
     }
   }
 
+  /**
+   * A method that allows the user to create a custom game.
+   */
   public void custom() {
     String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows:");
     if (checkForNumbers(row) == false || row.isEmpty() || row == null || Integer.parseInt(row) < 3
@@ -172,15 +175,15 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
     game.reset();
   }
 
-  /*****************************************************************
-   * A method to check if a string is comprised of only numbers
+  /**
+   * A method to check if a string is comprised of only numbers.
    * 
    * @param input
    *          the text to be checked
    * @return true/false depending on whether the string contained only digits
-   *****************************************************************/
+   */
   private boolean checkForNumbers(String input) {
-    char array[] = input.toCharArray();
+    char[] array = input.toCharArray();
     for (int i = 0; i < array.length; i++) {
       if (Character.isDigit(array[i]) == false) {
         return false;

@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import java.awt.*;
 
 /**
  * 
@@ -17,28 +16,27 @@ import java.awt.*;
  */
 public class MineSweeperMain {
 
+  private static JMenuBar menuBar;
+  private static JMenu menu;
+  private static JMenuItem customGame;
+
   /**
    * Main method that displays the game.
    * 
    * @param args
    *          takes an argument to run the program
    */
-
-  private static JMenuBar menuBar;
-  private static JMenu menu;
-  private static JMenuItem customGame;
-
   public static void main(String[] args) {
     JFrame frame = new JFrame("Mine Sweeper");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    MineSweeperGui gui = new MineSweeperGui();
 
     menuBar = new JMenuBar();
     menu = new JMenu("Menu");
     customGame = new JMenuItem("Custom Game");
     menuBar.add(menu);
     menu.add(customGame);
+
+    MineSweeperGui gui = new MineSweeperGui();
     frame.add(gui);
     frame.pack();
     frame.setJMenuBar(menuBar);
