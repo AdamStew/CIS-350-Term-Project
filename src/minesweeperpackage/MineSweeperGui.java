@@ -77,6 +77,10 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
 
   }
 
+  public MineSweeperGame getGame() {
+    return game;
+  }
+
   /**
    * A method to create the grid of buttons.
    */

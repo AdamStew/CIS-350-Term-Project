@@ -1,8 +1,12 @@
 package minesweeperpackage;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 /**
  * 
@@ -21,6 +25,7 @@ public class MineSweeperMain {
 
   private static JMenuBar menuBar;
   private static JMenu menu;
+  private static JMenuItem customGame;
 
   public static void main(String[] args) {
     JFrame frame = new JFrame("Mine Sweeper");
@@ -30,10 +35,20 @@ public class MineSweeperMain {
 
     menuBar = new JMenuBar();
     menu = new JMenu("Menu");
+    customGame = new JMenuItem("Custom Game");
     menuBar.add(menu);
+    menu.add(customGame);
     frame.add(gui);
     frame.pack();
     frame.setJMenuBar(menuBar);
     frame.setVisible(true);
+
+    customGame.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent arg0) {
+
+      }
+    });
   }
 }
