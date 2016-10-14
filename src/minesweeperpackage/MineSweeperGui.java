@@ -142,6 +142,55 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
     }
   }
 
+  public void custom() {
+    String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows:");
+    if (checkForNumbers(row) == false || row.isEmpty() || row == null || Integer.parseInt(row) < 3
+        || Integer.parseInt(row) > 30) {
+      JOptionPane.showMessageDialog(null, "Invalid input. Rows set to default.");
+      game.setRows(10);
+    } else {
+      game.setRows(Integer.parseInt(row));
+    }
+
+    String col = JOptionPane.showInputDialog(null, "Enter the desired number of columns:");
+    if (checkForNumbers(col) == false || col.isEmpty() || col == null || Integer.parseInt(col) < 3
+        || Integer.parseInt(col) > 30) {
+      JOptionPane.showMessageDialog(null, "Invalid input. Columns set to default.");
+      game.setCols(10);
+    } else {
+      game.setCols(Integer.parseInt(col));
+    }
+
+    String mines = JOptionPane.showInputDialog(null, "Enter the desired mine count:");
+    if (checkForNumbers(mines) == false || mines.isEmpty() || mines == null
+        || Integer.parseInt(mines) > (game.getRows() * game.getCols())) {
+      JOptionPane.showMessageDialog(null, "Invalid input. Mine count set to default.");
+      game.setMineCount(10);
+    } else {
+      game.setMineCount(Integer.parseInt(mines));
+    }
+    game.reset();
+  }
+
+  /*****************************************************************
+   * A method to check if a string is comprised of only numbers
+   * 
+   * @param input
+   *          the text to be checked
+   * @return true/false depending on whether the string contained only digits
+   *****************************************************************/
+  private boolean checkForNumbers(String input) {
+    char array[] = input.toCharArray();
+    for (int i = 0; i < array.length; i++) {
+      if (Character.isDigit(array[i]) == false) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+    return true;
+  }
+
   /**
    * A method that is called when a button is clicked.
    */

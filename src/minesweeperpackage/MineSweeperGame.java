@@ -29,55 +29,6 @@ public class MineSweeperGame {
     reset();
   }
 
-  public void custom() {
-    String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows:");
-    if (checkForNumbers(row) == false || row.isEmpty() || row == null || Integer.parseInt(row) < 3
-        || Integer.parseInt(row) > 30) {
-      JOptionPane.showMessageDialog(null, "Invalid input. Rows set to default.");
-      this.rows = 10;
-    } else {
-      this.rows = Integer.parseInt(row);
-    }
-
-    String col = JOptionPane.showInputDialog(null, "Enter the desired number of columns:");
-    if (checkForNumbers(col) == false || col.isEmpty() || col == null || Integer.parseInt(col) < 3
-        || Integer.parseInt(col) > 30) {
-      JOptionPane.showMessageDialog(null, "Invalid input. Columns set to default.");
-      this.cols = 10;
-    } else {
-      this.cols = Integer.parseInt(col);
-    }
-
-    String mines = JOptionPane.showInputDialog(null, "Enter the desired mine count:");
-    if (checkForNumbers(mines) == false || mines.isEmpty() || mines == null
-        || Integer.parseInt(mines) > (this.rows * this.cols)) {
-      JOptionPane.showMessageDialog(null, "Invalid input. Mine count set to default.");
-      this.mineCount = 10;
-    } else {
-      this.mineCount = Integer.parseInt(mines);
-    }
-    reset();
-  }
-
-  /*****************************************************************
-   * A method to check if a string is comprised of only numbers
-   * 
-   * @param input
-   *          the text to be checked
-   * @return true/false depending on whether the string contained only digits
-   *****************************************************************/
-  private boolean checkForNumbers(String input) {
-    char array[] = input.toCharArray();
-    for (int i = 0; i < array.length; i++) {
-      if (Character.isDigit(array[i]) == false) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-    return true;
-  }
-
   /**
    * A method that resets the board to a new game.
    */
@@ -126,6 +77,10 @@ public class MineSweeperGame {
     return this.mineCount;
   }
 
+  public void setMineCount(int mineCount) {
+    this.mineCount = mineCount;
+  }
+
   /**
    * A method that returns the number of the row.
    * 
@@ -135,6 +90,10 @@ public class MineSweeperGame {
     return this.rows;
   }
 
+  public void setRows(int rowCount) {
+    this.rows = rowCount;
+  }
+
   /**
    * A method that returns the number of the column.
    * 
@@ -142,6 +101,10 @@ public class MineSweeperGame {
    */
   public int getCols() {
     return this.cols;
+  }
+
+  public void setCols(int colCount) {
+    this.cols = colCount;
   }
 
   /**
