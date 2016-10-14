@@ -11,11 +11,6 @@ public class CellTest {
 
   @Test
   public void isMineTest() {
-    fail("Not yet implemented");
-  }
-
-  @Test
-  public void isMineTest2() {
     assertEquals(false, testCell.isMine());
   }
 
@@ -54,6 +49,18 @@ public class CellTest {
     assertEquals(false, testCell2.isExposed());
     assertEquals(true, testCell2.isMine());
     assertEquals(10, testCell2.getNeighbors());
+  }
+  
+  @Test 
+  public void zeroNeighborCountTest() {
+    Cell testCell3 = new Cell(50, false, false, true);
+    testCell3.zeroNeighborCount();
+    assertEquals(0, testCell3.getNeighbors());
+  }
+  
+  @Test
+  public void addNeighborsTest(){
+    
   }
 
 }
