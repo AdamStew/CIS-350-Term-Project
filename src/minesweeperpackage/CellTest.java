@@ -59,8 +59,10 @@ public class CellTest {
   }
   
   @Test
-  public void addNeighborsTest(){
-    
+  public void addNeighborsTest() {
+    Cell testCell4 = new Cell(100, false, false, true);
+    testCell4.addNeighbors(5);
+    assertEquals(105, testCell4.getNeighbors());
   }
 
 }
