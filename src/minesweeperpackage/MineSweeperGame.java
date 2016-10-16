@@ -214,13 +214,18 @@ public class MineSweeperGame {
    *          - An integer determining what column to look for.
    */
   public void select(int row, int col) {
-    if (board[row][col].isFlagged() || board[row][col].isMine()) {
+    if (board[row][col].isFlagged()){
+      return;
+    }
+    if (board[row][col].isMine()) {
+      board[row][col].setExposed(true);
       return;
     } else {
       if (getNeighborCount(row, col) == 0) {
         flood(row, col);
       }
     }
+    board[row][col].setExposed(true);
   }
 
   /**

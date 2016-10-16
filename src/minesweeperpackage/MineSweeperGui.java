@@ -13,11 +13,9 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.MenuElement;
 
 /**
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
@@ -27,9 +25,11 @@ import javax.swing.MenuElement;
  * 
  */
 
-public class MineSweeperGui<JMenuBar> extends JPanel {
+@SuppressWarnings("serial")
+public class MineSweeperGui extends JPanel {
   private JButton[][] board;
   private Cell cell;
+  private JMenuItem customItem;
   private JButton quitButton;
   private JButton resetButton;
   private JButton minesButton;
@@ -39,12 +39,15 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
   private ImageIcon mine;
   private ImageIcon flag;
   private MineSweeperGame game;
+  private static boolean mineFlag;
 
   /**
    * Constructor initializing game and GUI.
    */
-  public MineSweeperGui() {
+  public MineSweeperGui(JMenuItem customItem) {
     game = new MineSweeperGame();
+    
+    mineFlag = false;
 
     smiley = new ImageIcon("smiley.gif");
     mine = new ImageIcon("mine.jpg");
@@ -60,16 +63,17 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
     minesButton = new JButton("Mines");
     minesButton.addActionListener(new ButtonListener());
     minesButton.setFont(new Font("Arial", Font.PLAIN, 10));
+    
+    this.customItem = customItem;
+    this.customItem.addActionListener(new ButtonListener());
 
     buttonPanel = new JPanel();
     buttonPanel.add(quitButton);
     buttonPanel.add(resetButton);
     buttonPanel.add(minesButton);
 
-    gamePanel = new JPanel();
-    gamePanel.setLayout(new GridLayout(game.getRows(), game.getCols()));
-    gamePanel.setBackground(Color.gray);
-    board = new JButton[game.getRows()][game.getCols()];
+    
+    //board = new JButton[game.getRows()][game.getCols()];
     createButtons();
     setLayout(new BorderLayout());
     add(buttonPanel, BorderLayout.NORTH);
@@ -80,11 +84,17 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
   public MineSweeperGame getGame() {
     return game;
   }
+  
 
   /**
    * A method to create the grid of buttons.
    */
   private void createButtons() {
+    gamePanel = new JPanel();
+    gamePanel.setLayout(new GridLayout(game.getRows(), game.getCols()));
+    gamePanel.setBackground(Color.gray);
+    
+    board = new JButton[game.getRows()][game.getCols()];
     for (int row = 0; row < game.getRows(); row++) {
       for (int col = 0; col < game.getCols(); col++) {
         // cannot be enabled with ImageIcon
@@ -103,7 +113,6 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
    */
   private void display() {
     for (int row = 0; row < game.getRows(); row++) {
-
       for (int col = 0; col < game.getCols(); col++) {
         Cell cell2 = new Cell();
         cell2 = game.getCell(row, col);
@@ -173,6 +182,14 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
       game.setMineCount(Integer.parseInt(mines));
     }
     game.reset();
+    remove(gamePanel);
+    createButtons();
+    display();
+    add(gamePanel);
+    mineFlag = false;
+    repaint();
+    revalidate();
+    
   }
 
   /**
@@ -211,15 +228,15 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
               JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
             } else if (game.getGameStatus() == 1) {
               JOptionPane.showMessageDialog(null, "Congratulations! You won the game.");
-
             }
-
           }
         }
+        display();
 
         if (buttonPressed == resetButton) {
           game.reset();
           resetButtonText();
+          mineFlag = false;
         }
 
         if (buttonPressed == quitButton) {
@@ -230,10 +247,11 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
           } else {
             return;
           }
-
         }
+      }
 
-        if (buttonPressed == minesButton) {
+      if (buttonPressed == minesButton) {
+        if (mineFlag == false) {
           for (int row2 = 0; row2 < game.getRows(); row2++) {
             for (int col2 = 0; col2 < game.getCols(); col2++) {
               cell = game.getCell(row2, col2);
@@ -242,11 +260,24 @@ public class MineSweeperGui<JMenuBar> extends JPanel {
               }
             }
           }
+          mineFlag = true;
+        } else {
+          for (int row2 = 0; row2 < game.getRows(); row2++) {
+            for (int col2 = 0; col2 < game.getCols(); col2++) {
+              cell = game.getCell(row2, col2);
+              if (cell.isMine()) {
+                board[row2][col2].setIcon(null);
+              }
+            }
+          }
+          mineFlag = false;
         }
         display();
-
       }
-
+         
+      if (buttonPressed == customItem) {
+        custom();
+      }
     }
 
     @Override

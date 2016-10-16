@@ -1,8 +1,5 @@
 package minesweeperpackage;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -36,20 +33,11 @@ public class MineSweeperMain {
     menuBar.add(menu);
     menu.add(customGame);
 
-    MineSweeperGui gui = new MineSweeperGui();
+    MineSweeperGui gui = new MineSweeperGui(customGame);
     frame.add(gui);
     frame.pack();
     frame.setJMenuBar(menuBar);
     frame.setVisible(true);
 
-    customGame.addActionListener(new ActionListener() {
-
-      @Override
-      public void actionPerformed(ActionEvent arg0) {
-
-        // revalidate();
-        // repaint();
-      }
-    });
   }
 }
