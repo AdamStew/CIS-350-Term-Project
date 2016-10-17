@@ -214,7 +214,7 @@ public class MineSweeperGame {
    *          - An integer determining what column to look for.
    */
   public void select(int row, int col) {
-    if (board[row][col].isFlagged()){
+    if (board[row][col].isFlagged()) {
       return;
     }
     if (board[row][col].isMine()) {
