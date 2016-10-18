@@ -154,7 +154,7 @@ public class MineSweeperGui extends JPanel {
    */
   public void custom() {
     String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows:");
-    if (checkForNumbers(row) == false || row.isEmpty() || row == null || Integer.parseInt(row) < 3
+    if (checkForNumbers(row) == false || row.isEmpty() || Integer.parseInt(row) < 3
         || Integer.parseInt(row) > 30) {
       JOptionPane.showMessageDialog(null, "Invalid input. Rows set to default.");
       game.setRows(9);
@@ -163,7 +163,7 @@ public class MineSweeperGui extends JPanel {
     }
 
     String col = JOptionPane.showInputDialog(null, "Enter the desired number of columns:");
-    if (checkForNumbers(col) == false || col.isEmpty() || col == null || Integer.parseInt(col) < 3
+    if (checkForNumbers(col) == false || col.isEmpty() || Integer.parseInt(col) < 3
         || Integer.parseInt(col) > 30) {
       JOptionPane.showMessageDialog(null, "Invalid input. Columns set to default.");
       game.setCols(9);
@@ -172,7 +172,7 @@ public class MineSweeperGui extends JPanel {
     }
 
     String mines = JOptionPane.showInputDialog(null, "Enter the desired mine count:");
-    if (checkForNumbers(mines) == false || mines.isEmpty() || mines == null
+    if (checkForNumbers(mines) == false || mines.isEmpty()
         || Integer.parseInt(mines) > (game.getRows() * game.getCols())) {
       JOptionPane.showMessageDialog(null, "Invalid input. Mine count set to default.");
       game.setMineCount(9);
@@ -241,7 +241,7 @@ public class MineSweeperGui extends JPanel {
           int response = JOptionPane.showConfirmDialog(null,
               "Are you sure you want to quit the game?", "Quit", JOptionPane.YES_NO_OPTION);
           if (response == JOptionPane.YES_OPTION) {
-            System.exit(1);
+            System.exit(0);
           } else {
             return;
           }
