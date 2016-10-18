@@ -46,7 +46,7 @@ public class MineSweeperGui extends JPanel {
    */
   public MineSweeperGui(JMenuItem customItem) {
     game = new MineSweeperGame();
-    
+
     mineFlag = false;
 
     smiley = new ImageIcon("smiley.gif");
@@ -63,7 +63,7 @@ public class MineSweeperGui extends JPanel {
     minesButton = new JButton("Mines");
     minesButton.addActionListener(new ButtonListener());
     minesButton.setFont(new Font("Arial", Font.PLAIN, 10));
-    
+
     this.customItem = customItem;
     this.customItem.addActionListener(new ButtonListener());
 
@@ -72,8 +72,7 @@ public class MineSweeperGui extends JPanel {
     buttonPanel.add(resetButton);
     buttonPanel.add(minesButton);
 
-    
-    //board = new JButton[game.getRows()][game.getCols()];
+    // board = new JButton[game.getRows()][game.getCols()];
     createButtons();
     setLayout(new BorderLayout());
     add(buttonPanel, BorderLayout.NORTH);
@@ -84,7 +83,6 @@ public class MineSweeperGui extends JPanel {
   public MineSweeperGame getGame() {
     return game;
   }
-  
 
   /**
    * A method to create the grid of buttons.
@@ -93,7 +91,7 @@ public class MineSweeperGui extends JPanel {
     gamePanel = new JPanel();
     gamePanel.setLayout(new GridLayout(game.getRows(), game.getCols()));
     gamePanel.setBackground(Color.gray);
-    
+
     board = new JButton[game.getRows()][game.getCols()];
     for (int row = 0; row < game.getRows(); row++) {
       for (int col = 0; col < game.getCols(); col++) {
@@ -132,7 +130,7 @@ public class MineSweeperGui extends JPanel {
 
           } else {
             board[row][col].setText("" + nc);
-            board[row][col].setFont(new Font("Arial", Font.PLAIN, 11));
+            board[row][col].setFont(new Font("Arial", Font.PLAIN, 10));
           }
         }
       }
@@ -159,7 +157,7 @@ public class MineSweeperGui extends JPanel {
     if (checkForNumbers(row) == false || row.isEmpty() || row == null || Integer.parseInt(row) < 3
         || Integer.parseInt(row) > 30) {
       JOptionPane.showMessageDialog(null, "Invalid input. Rows set to default.");
-      game.setRows(10);
+      game.setRows(9);
     } else {
       game.setRows(Integer.parseInt(row));
     }
@@ -168,7 +166,7 @@ public class MineSweeperGui extends JPanel {
     if (checkForNumbers(col) == false || col.isEmpty() || col == null || Integer.parseInt(col) < 3
         || Integer.parseInt(col) > 30) {
       JOptionPane.showMessageDialog(null, "Invalid input. Columns set to default.");
-      game.setCols(10);
+      game.setCols(9);
     } else {
       game.setCols(Integer.parseInt(col));
     }
@@ -177,7 +175,7 @@ public class MineSweeperGui extends JPanel {
     if (checkForNumbers(mines) == false || mines.isEmpty() || mines == null
         || Integer.parseInt(mines) > (game.getRows() * game.getCols())) {
       JOptionPane.showMessageDialog(null, "Invalid input. Mine count set to default.");
-      game.setMineCount(10);
+      game.setMineCount(9);
     } else {
       game.setMineCount(Integer.parseInt(mines));
     }
@@ -189,7 +187,7 @@ public class MineSweeperGui extends JPanel {
     mineFlag = false;
     repaint();
     revalidate();
-    
+
   }
 
   /**
@@ -274,7 +272,7 @@ public class MineSweeperGui extends JPanel {
         }
         display();
       }
-         
+
       if (buttonPressed == customItem) {
         custom();
       }
