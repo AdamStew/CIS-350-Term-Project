@@ -237,7 +237,7 @@ public class MineSweeperGui extends JPanel {
           int response = JOptionPane.showConfirmDialog(null,
               "Are you sure you want to quit the game?", "Quit", JOptionPane.YES_NO_OPTION);
           if (response == JOptionPane.YES_OPTION) {
-            System.exit(0);
+            Runtime.getRuntime().halt(0);
           } else {
             return;
           }
