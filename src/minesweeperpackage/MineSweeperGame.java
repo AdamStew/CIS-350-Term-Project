@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-/**********************************************************************
+/**
  * A class contains all functions of the Mine Sweeper game itself.
  * 
  * @author Kate McGowan, Adam Stewart, Sierra Ellison

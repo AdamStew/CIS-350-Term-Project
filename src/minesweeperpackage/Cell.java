@@ -1,6 +1,6 @@
 package minesweeperpackage;
 
-/*****************************************************************
+/**
  * 
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
  * 
@@ -15,9 +15,9 @@ public class Cell {
   private boolean isExposed;
   private boolean isMine;
 
-  /*****************************************************************
+  /**
    * A constructor that initializes a default cell.
-   *****************************************************************/
+   */
   public Cell() {
     this.neighborCount = 0;
     this.isFlagged = false;
@@ -44,14 +44,14 @@ public class Cell {
     this.isMine = isMine;
   }
 
-  /*****************************************************************
+  /**
    * Returns the exposure status of the cell.
-   *****************************************************************/
+   */
   public boolean isExposed() {
     return this.isExposed;
   }
 
-  /*****************************************************************
+  /**
    * Sets the exposure status of the cell.
    * 
    * @param exposed
@@ -61,9 +61,9 @@ public class Cell {
     this.isExposed = exposed;
   }
 
-  /*****************************************************************
+  /**
    * Returns the mine status of the cell.
-   *****************************************************************/
+   */
   public boolean isMine() {
     return this.isMine;
   }
@@ -79,9 +79,9 @@ public class Cell {
     return this.isMine;
   }
 
-  /*****************************************************************
+  /**
    * Returns the flag status of the cell.
-   *****************************************************************/
+   */
   public boolean isFlagged() {
     return this.isFlagged;
   }
@@ -106,16 +106,16 @@ public class Cell {
     neighborCount += neighbors;
   }
 
-  /*****************************************************************
+  /**
    * Sets the cell's neighbor count to zero.
-   *****************************************************************/
+   */
   public void zeroNeighborCount() {
     neighborCount = 0;
   }
 
-  /*****************************************************************
+  /**
    * Returns the neighbor count of the cell.
-   *****************************************************************/
+   */
   public int getNeighbors() {
     return neighborCount;
   }
