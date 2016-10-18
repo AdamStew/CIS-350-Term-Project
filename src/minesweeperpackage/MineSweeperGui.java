@@ -151,30 +151,46 @@ public class MineSweeperGui extends JPanel {
    */
   public void custom() {
     String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows:");
-    if (checkForNumbers(row) == false || row.isEmpty() || Integer.parseInt(row) < 3
-        || Integer.parseInt(row) > 30) {
-      JOptionPane.showMessageDialog(null, "Invalid input. Rows set to default.");
-      game.setRows(9);
-    } else {
-      game.setRows(Integer.parseInt(row));
-    }
+    int oldRow = game.getRows();
+    int oldCol = game.getCols();
+    
+    if (row != null) {
+      if (checkForNumbers(row) == false || row.isEmpty() || Integer.parseInt(row) < 3
+          || Integer.parseInt(row) > 30) {
+        JOptionPane.showMessageDialog(null, "Invalid input. Rows set to default.");
+        game.setRows(9);
+      } else {
+        game.setRows(Integer.parseInt(row));
+      }
+    
 
-    String col = JOptionPane.showInputDialog(null, "Enter the desired number of columns:");
-    if (checkForNumbers(col) == false || col.isEmpty() || Integer.parseInt(col) < 3
-        || Integer.parseInt(col) > 30) {
-      JOptionPane.showMessageDialog(null, "Invalid input. Columns set to default.");
-      game.setCols(9);
-    } else {
-      game.setCols(Integer.parseInt(col));
-    }
+      String col = JOptionPane.showInputDialog(null, "Enter the desired number of columns:");
+      if (col != null) {
+        if (checkForNumbers(col) == false || col.isEmpty() || Integer.parseInt(col) < 3
+            || Integer.parseInt(col) > 30) {
+          JOptionPane.showMessageDialog(null, "Invalid input. Columns set to default.");
+          game.setCols(9);
+        } else {
+          game.setCols(Integer.parseInt(col));
+        }
+      
 
-    String mines = JOptionPane.showInputDialog(null, "Enter the desired mine count:");
-    if (checkForNumbers(mines) == false || mines.isEmpty()
-        || Integer.parseInt(mines) > (game.getRows() * game.getCols())) {
-      JOptionPane.showMessageDialog(null, "Invalid input. Mine count set to default.");
-      game.setMineCount(9);
-    } else {
-      game.setMineCount(Integer.parseInt(mines));
+        String mines = JOptionPane.showInputDialog(null, "Enter the desired mine count:");
+        if (mines != null) {
+          if (checkForNumbers(mines) == false || mines.isEmpty()
+              || Integer.parseInt(mines) > (game.getRows() * game.getCols())) {
+            JOptionPane.showMessageDialog(null, "Invalid input. Mine count set to default.");
+            game.setMineCount(9);
+          } else {
+            game.setMineCount(Integer.parseInt(mines));
+          }
+        } else {
+          game.setRows(oldRow);
+          game.setCols(oldCol);
+        }
+      } else {
+        game.setRows(oldRow);
+      }
     }
     game.reset();
     remove(gamePanel);
@@ -183,7 +199,6 @@ public class MineSweeperGui extends JPanel {
     add(gamePanel);
     repaint();
     revalidate();
-
   }
 
   /**
