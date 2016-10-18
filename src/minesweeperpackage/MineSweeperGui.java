@@ -47,8 +47,6 @@ public class MineSweeperGui extends JPanel {
   public MineSweeperGui(JMenuItem customItem) {
     game = new MineSweeperGame();
 
-    mineFlag = false;
-
     smiley = new ImageIcon("smiley.gif");
     mine = new ImageIcon("mine.jpg");
     flag = new ImageIcon("flag.png");
@@ -112,8 +110,7 @@ public class MineSweeperGui extends JPanel {
   private void display() {
     for (int row = 0; row < game.getRows(); row++) {
       for (int col = 0; col < game.getCols(); col++) {
-        Cell cell2 = new Cell();
-        cell2 = game.getCell(row, col);
+        Cell cell2 = game.getCell(row, col);
 
         if (cell2.isExposed()) {
           board[row][col].setEnabled(false);
@@ -184,7 +181,6 @@ public class MineSweeperGui extends JPanel {
     createButtons();
     display();
     add(gamePanel);
-    mineFlag = false;
     repaint();
     revalidate();
 
