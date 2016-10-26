@@ -293,6 +293,35 @@ public class MineSweeperGui extends JPanel {
               JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
               losses++;
             } else if (game.getGameStatus() == 1) {
+              // Winning Sound Effect
+              String sound = "Ta_Da.wav";
+              AudioInputStream audioInputStream = null;
+              try {
+                audioInputStream = AudioSystem
+                    .getAudioInputStream(new File(sound).getAbsoluteFile());
+              } catch (UnsupportedAudioFileException | IOException except) {
+                // TODO Auto-generated catch block
+                except.printStackTrace();
+              }
+              Clip clip = null;
+              try {
+                clip = AudioSystem.getClip();
+              } catch (LineUnavailableException except) {
+                // TODO Auto-generated catch block
+                except.printStackTrace();
+              }
+              try {
+                if (clip != null) {
+                  clip.open(audioInputStream);
+                }
+              } catch (LineUnavailableException | IOException except) {
+                // TODO Auto-generated catch block
+                except.printStackTrace();
+              }
+              if (clip != null) {
+                clip.start();
+              }
+
               JOptionPane.showMessageDialog(null, "Congratulations! You won the game.");
               wins++;
             }
