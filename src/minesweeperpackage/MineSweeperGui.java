@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -40,12 +41,19 @@ public class MineSweeperGui extends JPanel {
   private ImageIcon flag;
   private MineSweeperGame game;
   private static boolean mineFlag;
+  private JLabel winLabel;
+  private JLabel loseLabel;
+  private int wins;
+  private int losses;
 
   /**
    * Constructor initializing game and GUI.
    */
   public MineSweeperGui(JMenuItem customItem) {
     game = new MineSweeperGame();
+
+    winLabel = new JLabel("Wins: " + wins);
+    loseLabel = new JLabel("Losses: " + losses);
 
     smiley = new ImageIcon("smiley.gif");
     mine = new ImageIcon("mine.jpg");
@@ -67,7 +75,9 @@ public class MineSweeperGui extends JPanel {
 
     buttonPanel = new JPanel();
     buttonPanel.add(quitButton);
+    buttonPanel.add(winLabel);
     buttonPanel.add(resetButton);
+    buttonPanel.add(loseLabel);
     buttonPanel.add(minesButton);
 
     // board = new JButton[game.getRows()][game.getCols()];
@@ -76,6 +86,14 @@ public class MineSweeperGui extends JPanel {
     add(buttonPanel, BorderLayout.NORTH);
     add(gamePanel, BorderLayout.CENTER);
 
+  }
+
+  /**
+   * A method that updates the wins and losses counts.
+   */
+  private void updateLabels() {
+    winLabel.setText("Wins: " + wins);
+    loseLabel.setText("Losses: " + losses);
   }
 
   public MineSweeperGame getGame() {
@@ -153,7 +171,7 @@ public class MineSweeperGui extends JPanel {
     String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows:");
     int oldRow = game.getRows();
     int oldCol = game.getCols();
-    
+
     if (row != null) {
       if (checkForNumbers(row) == false || row.isEmpty() || Integer.parseInt(row) < 3
           || Integer.parseInt(row) > 30) {
@@ -162,7 +180,6 @@ public class MineSweeperGui extends JPanel {
       } else {
         game.setRows(Integer.parseInt(row));
       }
-    
 
       String col = JOptionPane.showInputDialog(null, "Enter the desired number of columns:");
       if (col != null) {
@@ -173,7 +190,6 @@ public class MineSweeperGui extends JPanel {
         } else {
           game.setCols(Integer.parseInt(col));
         }
-      
 
         String mines = JOptionPane.showInputDialog(null, "Enter the desired mine count:");
         if (mines != null) {
@@ -235,11 +251,15 @@ public class MineSweeperGui extends JPanel {
             game.flood(row, col);
             if (game.getGameStatus() == 0) {
               JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
+              losses++;
             } else if (game.getGameStatus() == 1) {
               JOptionPane.showMessageDialog(null, "Congratulations! You won the game.");
+              wins++;
             }
           }
         }
+        updateLabels();
+
         display();
 
         if (buttonPressed == resetButton) {

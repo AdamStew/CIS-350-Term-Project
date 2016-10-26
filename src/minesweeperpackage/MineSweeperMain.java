@@ -37,6 +37,7 @@ public class MineSweeperMain {
     frame.add(gui);
     frame.pack();
     frame.setJMenuBar(menuBar);
+    frame.setResizable(true);
     frame.setVisible(true);
 
   }
