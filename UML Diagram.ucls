@@ -3,7 +3,7 @@
   associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="minesweeperpackage.Cell" project="CIS350_Term_Project" 
     file="/CIS350_Term_Project/src/minesweeperpackage/Cell.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="172" y="106"/>    
+    <position height="-1" width="-1" x="179" y="134"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="minesweeperpackage.MineSweeperGui" project="CIS350_Term_Project" 
     file="/CIS350_Term_Project/src/minesweeperpackage/MineSweeperGui.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="999" y="169"/>    
+    <position height="-1" width="-1" x="850" y="142"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="minesweeperpackage.MineSweeperGui.ButtonListener" project="CIS350_Term_Project" 
     file="/CIS350_Term_Project/src/minesweeperpackage/MineSweeperGui.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="435" y="777"/>    
+    <position height="-1" width="-1" x="455" y="795"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="minesweeperpackage.MineSweeperMain" project="CIS350_Term_Project" 
     file="/CIS350_Term_Project/src/minesweeperpackage/MineSweeperMain.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="840" y="670"/>    
+    <position height="-1" width="-1" x="803" y="568"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
