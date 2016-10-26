@@ -168,7 +168,7 @@ public class MineSweeperGui extends JPanel {
    * A method that allows the user to create a custom game.
    */
   public void custom() {
-    String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows:");
+    String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows (Min. 3):");
     int oldRow = game.getRows();
     int oldCol = game.getCols();
 
@@ -181,7 +181,8 @@ public class MineSweeperGui extends JPanel {
         game.setRows(Integer.parseInt(row));
       }
 
-      String col = JOptionPane.showInputDialog(null, "Enter the desired number of columns:");
+      String col = JOptionPane.showInputDialog(null,
+          "Enter the desired number of columns (Min. 3):");
       if (col != null) {
         if (checkForNumbers(col) == false || col.isEmpty() || Integer.parseInt(col) < 3
             || Integer.parseInt(col) > 30) {

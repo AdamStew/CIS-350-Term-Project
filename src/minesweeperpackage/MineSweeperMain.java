@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
 
 /**
  * 
@@ -26,7 +27,7 @@ public class MineSweeperMain {
   public static void main(String[] args) {
     JFrame frame = new JFrame("Mine Sweeper");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+    setLookAndFeel();
     menuBar = new JMenuBar();
     menu = new JMenu("Menu");
     customGame = new JMenuItem("Custom Game");
@@ -40,5 +41,16 @@ public class MineSweeperMain {
     frame.setResizable(true);
     frame.setVisible(true);
 
+  }
+
+  /**
+   * Get rid of Java's default look and feel and use the system defined one instead.
+   */
+  private static void setLookAndFeel() {
+    try {
+      UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
