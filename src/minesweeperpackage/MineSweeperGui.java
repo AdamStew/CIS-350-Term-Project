@@ -56,7 +56,7 @@ public class MineSweeperGui extends JPanel {
     loseLabel = new JLabel("Losses: " + losses);
 
     smiley = new ImageIcon("smiley.gif");
-    mine = new ImageIcon("mine.jpg");
+    mine = new ImageIcon("mine.png");
     flag = new ImageIcon("flag.png");
 
     quitButton = new JButton("Quit");
@@ -106,7 +106,7 @@ public class MineSweeperGui extends JPanel {
   private void createButtons() {
     gamePanel = new JPanel();
     gamePanel.setLayout(new GridLayout(game.getRows(), game.getCols()));
-    gamePanel.setBackground(Color.gray);
+    // gamePanel.setBackground(Color.gray);
 
     board = new JButton[game.getRows()][game.getCols()];
     for (int row = 0; row < game.getRows(); row++) {
