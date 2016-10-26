@@ -52,6 +52,8 @@ public class MineSweeperGui extends JPanel {
   public MineSweeperGui(JMenuItem customItem) {
     game = new MineSweeperGame();
 
+    wins = 0;
+    losses = 0;
     winLabel = new JLabel("Wins: " + wins);
     loseLabel = new JLabel("Losses: " + losses);
 

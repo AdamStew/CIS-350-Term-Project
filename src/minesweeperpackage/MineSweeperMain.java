@@ -49,8 +49,8 @@ public class MineSweeperMain {
   private static void setLookAndFeel() {
     try {
       UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-    } catch (Exception e) {
-      e.printStackTrace();
+    } catch (Exception except) {
+      except.printStackTrace();
     }
   }
 }
