@@ -17,6 +17,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
@@ -253,6 +261,35 @@ public class MineSweeperGui extends JPanel {
             game.select(row, col);
             game.flood(row, col);
             if (game.getGameStatus() == 0) {
+              // Losing Sound Effect
+              String sound = "Sad_Trombone.wav";
+              AudioInputStream audioInputStream = null;
+              try {
+                audioInputStream = AudioSystem
+                    .getAudioInputStream(new File(sound).getAbsoluteFile());
+              } catch (UnsupportedAudioFileException | IOException except) {
+                // TODO Auto-generated catch block
+                except.printStackTrace();
+              }
+              Clip clip = null;
+              try {
+                clip = AudioSystem.getClip();
+              } catch (LineUnavailableException except) {
+                // TODO Auto-generated catch block
+                except.printStackTrace();
+              }
+              try {
+                if (clip != null) {
+                  clip.open(audioInputStream);
+                }
+              } catch (LineUnavailableException | IOException except) {
+                // TODO Auto-generated catch block
+                except.printStackTrace();
+              }
+              if (clip != null) {
+                clip.start();
+              }
+
               JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
               losses++;
             } else if (game.getGameStatus() == 1) {
