@@ -17,6 +17,7 @@ public class MineSweeperMain {
   private static JMenuBar menuBar;
   private static JMenu menu;
   private static JMenuItem customGame;
+  private static JMenuItem difficultyGame;
 
   /**
    * Main method that displays the game.
@@ -30,11 +31,13 @@ public class MineSweeperMain {
     setLookAndFeel();
     menuBar = new JMenuBar();
     menu = new JMenu("Menu");
+    difficultyGame = new JMenuItem("Select Difficulty");
     customGame = new JMenuItem("Custom Game");
     menuBar.add(menu);
+    menu.add(difficultyGame);
     menu.add(customGame);
 
-    MineSweeperGui gui = new MineSweeperGui(customGame);
+    MineSweeperGui gui = new MineSweeperGui(difficultyGame, customGame);
     frame.add(gui);
     frame.pack();
     frame.setJMenuBar(menuBar);

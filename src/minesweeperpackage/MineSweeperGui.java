@@ -19,7 +19,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -27,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 /**
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
@@ -41,6 +43,7 @@ public class MineSweeperGui extends JPanel {
   private JButton[][] board;
   private Cell cell;
   private JMenuItem customItem;
+  private JMenuItem difficultItem;
   private JButton quitButton;
   private JButton resetButton;
   private JButton minesButton;
@@ -59,7 +62,7 @@ public class MineSweeperGui extends JPanel {
   /**
    * Constructor initializing game and GUI.
    */
-  public MineSweeperGui(JMenuItem customItem) {
+  public MineSweeperGui(JMenuItem difficultItem, JMenuItem customItem) {
     game = new MineSweeperGame();
 
     wins = 0;
@@ -82,6 +85,8 @@ public class MineSweeperGui extends JPanel {
     minesButton.addActionListener(new ButtonListener());
     minesButton.setFont(new Font("Arial", Font.PLAIN, 10));
 
+    this.difficultItem = difficultItem;
+    this.difficultItem.addActionListener(new ButtonListener());
     this.customItem = customItem;
     this.customItem.addActionListener(new ButtonListener());
 
@@ -231,6 +236,62 @@ public class MineSweeperGui extends JPanel {
   }
 
   /**
+   * A method that allows the user to select a pre-determined difficulty.
+   */
+  public void difficulty() {
+    JPanel radioPanel = new JPanel(); //Creates panel.
+    
+    //Radio buttons going into our panel.
+    JRadioButton easy = new JRadioButton("Beginner (9x9 10 Mines)", true);
+    JRadioButton medium = new JRadioButton("Intermediate (16x16 30 Mines)");
+    JRadioButton hard = new JRadioButton("Advanced (16x30 99 Mines)");
+    
+    ButtonGroup group = new ButtonGroup(); //This makes it so you can't select more than one box.
+    group.add(easy);
+    group.add(medium);
+    group.add(hard);
+    
+    //Designing panel.
+    BoxLayout boxLayout = new BoxLayout(radioPanel, BoxLayout.Y_AXIS);
+    radioPanel.add(new JLabel("Select Difficulty"));
+    radioPanel.add(easy);
+    radioPanel.add(medium);
+    radioPanel.add(hard);
+    radioPanel.setLayout(boxLayout);
+    
+    JOptionPane diff = new JOptionPane();
+    int result = diff.showConfirmDialog(null, radioPanel, null, JOptionPane.OK_CANCEL_OPTION, 
+        JOptionPane.INFORMATION_MESSAGE);
+    
+    
+    //Options
+    if (result == JOptionPane.YES_OPTION) {
+      if (easy.isSelected()) {
+        game.setCols(9);
+        game.setRows(9);
+        game.setMineCount(10);
+      }
+      if (medium.isSelected()) {
+        game.setCols(16);
+        game.setRows(16);
+        game.setMineCount(30);
+      }
+      if (hard.isSelected()) {
+        game.setCols(30);
+        game.setRows(16);
+        game.setMineCount(99);
+      }
+      game.reset();
+      remove(gamePanel);
+      createButtons();
+      display();
+      add(gamePanel);
+      repaint();
+      revalidate();
+    }
+  }
+  
+  /**
    * A method to check if a string is comprised of only numbers.
    * 
    * @param input
@@ -377,6 +438,10 @@ public class MineSweeperGui extends JPanel {
 
       if (buttonPressed == customItem) {
         custom();
+      }
+      
+      if (buttonPressed == difficultItem) {
+        difficulty();
       }
     }
 
