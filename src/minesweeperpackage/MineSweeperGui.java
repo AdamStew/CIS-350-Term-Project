@@ -34,6 +34,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 
+import java.util.Timer;
+
 /**
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
  * 
@@ -55,6 +57,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
   private JButton minesButton;
   private JPanel buttonPanel;
   private JPanel gamePanel;
+  private JPanel timerPanel;
   private ImageIcon smiley;
   private ImageIcon mine;
   private ImageIcon flag;
@@ -66,6 +69,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
   private JLabel mineCountLabel;
   private int wins;
   private int losses;
+  private Timer time;
 
   /**
    * Constructor initializing game and GUI.
@@ -122,11 +126,13 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     add(buttonPanel, BorderLayout.NORTH);
     add(gamePanel, BorderLayout.CENTER);
 
+    time = new Timer("time");
+    //timerPanel.action(time);
     
     //setResizable(true);
     setJMenuBar(menuBar);
     setVisible(true);
-    setSize(1000, 1000);
+    setSize(400, 500);
   }
   
   public static void main(String [] args){
@@ -266,6 +272,9 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         game.setRows(oldRow);
       }
     }
+    int colSize = game.getCols() * 40;
+    int rowSize = game.getRows() * 50;
+    setSize(colSize, rowSize);
     game.reset();
     remove(gamePanel);
     createButtons();
@@ -308,16 +317,19 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         game.setCols(9);
         game.setRows(9);
         game.setMineCount(10);
+        setSize(400, 500);
       }
       if (medium.isSelected()) {
         game.setCols(16);
         game.setRows(16);
         game.setMineCount(30);
+        setSize(640, 800);
       }
       if (hard.isSelected()) {
         game.setCols(30);
         game.setRows(16);
         game.setMineCount(99);
+        setSize(1200, 800);
       }
       game.reset();
       remove(gamePanel);
