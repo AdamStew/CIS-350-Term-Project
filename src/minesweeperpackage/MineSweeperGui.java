@@ -102,11 +102,11 @@ public class MineSweeperGui extends JPanel {
     buttonPanel.add(resetButton);
     buttonPanel.add(loseLabel);
     buttonPanel.add(minesButton);
-    buttonPanel.add(mineCountLabel);
 
     // board = new JButton[game.getRows()][game.getCols()];
     createButtons();
-    setLayout(new BorderLayout());
+    setLayout(new BorderLayout(0, 0));
+    add(mineCountLabel, BorderLayout.SOUTH);
     add(buttonPanel, BorderLayout.NORTH);
     add(gamePanel, BorderLayout.CENTER);
 
