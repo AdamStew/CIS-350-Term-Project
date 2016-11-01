@@ -28,7 +28,6 @@ public class MineSweeperMain {
   public static void main(String[] args) {
     JFrame frame = new JFrame("Mine Sweeper");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setLookAndFeel();
     menuBar = new JMenuBar();
     menu = new JMenu("Menu");
     difficultyGame = new JMenuItem("Select Difficulty");
@@ -46,14 +45,4 @@ public class MineSweeperMain {
 
   }
 
-  /**
-   * Get rid of Java's default look and feel and use the system defined one instead.
-   */
-  private static void setLookAndFeel() {
-    try {
-      UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-    } catch (Exception except) {
-      except.printStackTrace();
-    }
-  }
 }
