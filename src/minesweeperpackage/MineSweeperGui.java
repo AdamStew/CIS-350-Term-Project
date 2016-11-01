@@ -58,6 +58,7 @@ public class MineSweeperGui extends JPanel {
   private static boolean mineFlag;
   private JLabel winLabel;
   private JLabel loseLabel;
+  private JLabel mineCountLabel;
   private int wins;
   private int losses;
 
@@ -73,6 +74,7 @@ public class MineSweeperGui extends JPanel {
     losses = 0;
     winLabel = new JLabel("Wins: " + wins);
     loseLabel = new JLabel("Losses: " + losses);
+    mineCountLabel = new JLabel("Mine Count: " + game.mineCount());
 
     smiley = new ImageIcon("smiley.gif");
     mine = new ImageIcon("mine.png");
@@ -100,6 +102,7 @@ public class MineSweeperGui extends JPanel {
     buttonPanel.add(resetButton);
     buttonPanel.add(loseLabel);
     buttonPanel.add(minesButton);
+    buttonPanel.add(mineCountLabel);
 
     // board = new JButton[game.getRows()][game.getCols()];
     createButtons();
@@ -126,6 +129,8 @@ public class MineSweeperGui extends JPanel {
   private void updateLabels() {
     winLabel.setText("Wins: " + wins);
     loseLabel.setText("Losses: " + losses);
+    mineCountLabel.setText("Mine Count: " + game.mineCount());
+
   }
 
   public MineSweeperGame getGame() {
@@ -446,6 +451,7 @@ public class MineSweeperGui extends JPanel {
           }
           mineFlag = false;
         }
+        updateLabels();
         display();
       }
 
@@ -494,6 +500,7 @@ public class MineSweeperGui extends JPanel {
                 game.unflag(row, col);
                 board[row][col].setIcon(null);
               }
+              updateLabels();
             }
           }
         }

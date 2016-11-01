@@ -17,6 +17,7 @@ public class MineSweeperGame {
   private Cell[][] board;
   private int rows;
   private int cols;
+  private int flagCount;
 
   /**
    * Constructor that creates the board/game and sets it to easy by default.
@@ -26,6 +27,7 @@ public class MineSweeperGame {
     this.rows = 9;
     this.cols = 9;
     this.mineCount = 10;
+    this.flagCount = 0;
     reset();
   }
 
@@ -53,6 +55,7 @@ public class MineSweeperGame {
       }
 
     }
+    this.flagCount = 0;
   }
 
   /**
@@ -239,6 +242,7 @@ public class MineSweeperGame {
    */
   public void flag(int row, int col) {
     board[row][col].setFlagged(true);
+    flagCount++;
   }
 
   /**
@@ -252,6 +256,7 @@ public class MineSweeperGame {
    */
   public void unflag(int row, int col) {
     board[row][col].setFlagged(false);
+    flagCount--;
   }
 
   /**
@@ -292,5 +297,10 @@ public class MineSweeperGame {
 
     }
     return -1;
+  }
+
+  public int mineCount() {
+    return mineCount - flagCount;
+
   }
 }
