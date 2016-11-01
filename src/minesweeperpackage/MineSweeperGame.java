@@ -301,6 +301,5 @@ public class MineSweeperGame {
 
   public int mineCount() {
     return mineCount - flagCount;
-
   }
 }
