@@ -76,10 +76,10 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
    */
   public MineSweeperGui() {
     game = new MineSweeperGame();
-
+    
     menuBar = new JMenuBar();
     menu = new JMenu("Menu");
-
+    
     difficultyGame = new JMenuItem("Select Difficulty");
     customGame = new JMenuItem("Custom Game");
     menuBar.add(menu);
@@ -126,20 +126,16 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     add(buttonPanel, BorderLayout.NORTH);
     add(gamePanel, BorderLayout.CENTER);
 
-<<<<<<< HEAD
-    // setResizable(true);
-=======
     time = new Timer("time");
     //timerPanel.action(time);
     
     //setResizable(true);
->>>>>>> refs/remotes/origin/master
     setJMenuBar(menuBar);
     setVisible(true);
     setSize(400, 500);
   }
-
-  public static void main(String[] args) {
+  
+  public static void main(String [] args){
     new MineSweeperGui();
   }
 
@@ -276,8 +272,22 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         game.setRows(oldRow);
       }
     }
-    int colSize = game.getCols() * 40;
-    int rowSize = game.getRows() * 50;
+    
+    int colSize;
+    int rowSize;
+    
+    if (game.getCols() > 7) {
+      colSize = game.getCols() * 40;
+    } else {
+      colSize = 300;
+    }
+    
+    if (game.getRows() > 7) {
+      rowSize = game.getRows() * 50;
+    } else {
+      rowSize = game.getRows() * 80;
+    }
+    
     setSize(colSize, rowSize);
     game.reset();
     remove(gamePanel);
@@ -363,7 +373,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     }
     return true;
   }
-
+  
   @Override
   public void actionPerformed(ActionEvent event) {
 
@@ -379,7 +389,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             String sound = "Sad_Trombone.wav";
             AudioInputStream audioInputStream = null;
             try {
-              audioInputStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+              audioInputStream = AudioSystem
+                  .getAudioInputStream(new File(sound).getAbsoluteFile());
             } catch (UnsupportedAudioFileException | IOException except) {
               // TODO Auto-generated catch block
               except.printStackTrace();
@@ -410,7 +421,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             String sound = "Ta_Da.wav";
             AudioInputStream audioInputStream = null;
             try {
-              audioInputStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+              audioInputStream = AudioSystem
+                  .getAudioInputStream(new File(sound).getAbsoluteFile());
             } catch (UnsupportedAudioFileException | IOException except) {
               // TODO Auto-generated catch block
               except.printStackTrace();
