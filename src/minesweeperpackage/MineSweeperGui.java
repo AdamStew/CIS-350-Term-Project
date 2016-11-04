@@ -126,14 +126,9 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     add(buttonPanel, BorderLayout.NORTH);
     add(gamePanel, BorderLayout.CENTER);
 
-<<<<<<< HEAD
-    // setResizable(true);
-=======
     time = new Timer("time");
-    //timerPanel.action(time);
-    
-    //setResizable(true);
->>>>>>> refs/remotes/origin/master
+    // timerPanel.action(time);
+
     setJMenuBar(menuBar);
     setVisible(true);
     setSize(400, 500);
