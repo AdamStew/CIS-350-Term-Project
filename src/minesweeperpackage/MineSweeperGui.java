@@ -50,9 +50,11 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
   private Cell cell;
   private JMenuBar menuBar;
   private JMenu menu;
+  private JMenu options;
   private JMenuItem customGame;
   private JMenuItem difficultyGame;
-  private JButton quitButton;
+  private JMenuItem quitGame;
+  private JMenuItem minesGame;
   private JButton resetButton;
   private JButton minesButton;
   private JPanel buttonPanel;
@@ -76,15 +78,21 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
    */
   public MineSweeperGui() {
     game = new MineSweeperGame();
-
+    
     menuBar = new JMenuBar();
     menu = new JMenu("Menu");
-
+    options = new JMenu("Options");
+    
     difficultyGame = new JMenuItem("Select Difficulty");
     customGame = new JMenuItem("Custom Game");
+    quitGame = new JMenuItem("Quit Game");
+    minesGame = new JMenuItem("Toggle Mines");
     menuBar.add(menu);
     menu.add(difficultyGame);
     menu.add(customGame);
+    menu.add(quitGame);
+    menuBar.add(options);
+    options.add(minesGame);
 
     setLookAndFeel();
 
@@ -98,26 +106,23 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     mine = new ImageIcon("mine.png");
     flag = new ImageIcon("flag.png");
 
-    quitButton = new JButton("Quit");
-    quitButton.setFont(new Font("Arial", Font.PLAIN, 10));
-    quitButton.addActionListener(this);
-
     resetButton = new JButton(smiley);
     resetButton.addActionListener(this);
 
-    minesButton = new JButton("Mines");
-    minesButton.addActionListener(this);
-    minesButton.setFont(new Font("Arial", Font.PLAIN, 10));
+    //minesButton = new JButton("Mines");
+    //minesButton.addActionListener(this);
+    //minesButton.setFont(new Font("Arial", Font.PLAIN, 10));
 
     difficultyGame.addActionListener(this);
     customGame.addActionListener(this);
+    quitGame.addActionListener(this);
+    minesGame.addActionListener(this);
 
     buttonPanel = new JPanel();
-    buttonPanel.add(quitButton);
     buttonPanel.add(winLabel);
     buttonPanel.add(resetButton);
     buttonPanel.add(loseLabel);
-    buttonPanel.add(minesButton);
+    //buttonPanel.add(minesButton);
 
     // board = new JButton[game.getRows()][game.getCols()];
     createButtons();
@@ -127,14 +132,20 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     add(gamePanel, BorderLayout.CENTER);
 
     time = new Timer("time");
+<<<<<<< HEAD
     // timerPanel.action(time);
 
+=======
+    //timerPanel.action(time);
+    
+    //setResizable(true);
+>>>>>>> refs/remotes/origin/master
     setJMenuBar(menuBar);
     setVisible(true);
     setSize(400, 500);
   }
-
-  public static void main(String[] args) {
+  
+  public static void main(String [] args){
     new MineSweeperGui();
   }
 
@@ -271,8 +282,22 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         game.setRows(oldRow);
       }
     }
-    int colSize = game.getCols() * 40;
-    int rowSize = game.getRows() * 50;
+    
+    int colSize;
+    int rowSize;
+    
+    if (game.getCols() > 7) {
+      colSize = game.getCols() * 40;
+    } else {
+      colSize = 300;
+    }
+    
+    if (game.getRows() > 7) {
+      rowSize = game.getRows() * 50;
+    } else {
+      rowSize = game.getRows() * 80;
+    }
+    
     setSize(colSize, rowSize);
     game.reset();
     remove(gamePanel);
@@ -358,7 +383,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     }
     return true;
   }
-
+  
   @Override
   public void actionPerformed(ActionEvent event) {
 
@@ -374,7 +399,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             String sound = "Sad_Trombone.wav";
             AudioInputStream audioInputStream = null;
             try {
-              audioInputStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+              audioInputStream = AudioSystem
+                  .getAudioInputStream(new File(sound).getAbsoluteFile());
             } catch (UnsupportedAudioFileException | IOException except) {
               // TODO Auto-generated catch block
               except.printStackTrace();
@@ -405,7 +431,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             String sound = "Ta_Da.wav";
             AudioInputStream audioInputStream = null;
             try {
-              audioInputStream = AudioSystem.getAudioInputStream(new File(sound).getAbsoluteFile());
+              audioInputStream = AudioSystem
+                  .getAudioInputStream(new File(sound).getAbsoluteFile());
             } catch (UnsupportedAudioFileException | IOException except) {
               // TODO Auto-generated catch block
               except.printStackTrace();
@@ -443,19 +470,28 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         resetButtonText();
         mineFlag = false;
       }
-
-      if (buttonPressed == quitButton) {
-        int response = JOptionPane.showConfirmDialog(null,
-            "Are you sure you want to quit the game?", "Quit", JOptionPane.YES_NO_OPTION);
-        if (response == JOptionPane.YES_OPTION) {
-          Runtime.getRuntime().halt(0);
-        } else {
-          return;
-        }
-      }
+        
     }
 
-    if (buttonPressed == minesButton) {
+    if (buttonPressed == customGame) {
+      custom();
+    }
+
+    if (buttonPressed == difficultyGame) {
+      difficulty();
+    }
+    
+    if (buttonPressed == quitGame) {
+      int response = JOptionPane.showConfirmDialog(null,
+          "Are you sure you want to quit the game?", "Quit", JOptionPane.YES_NO_OPTION);
+      if (response == JOptionPane.YES_OPTION) {
+        Runtime.getRuntime().halt(0);
+      } else {
+        return;
+      }
+    }
+    
+    if (buttonPressed == minesGame) {
       if (mineFlag == false) {
         for (int row2 = 0; row2 < game.getRows(); row2++) {
           for (int col2 = 0; col2 < game.getCols(); col2++) {
@@ -479,14 +515,6 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       }
       updateLabels();
       display();
-    }
-
-    if (buttonPressed == customGame) {
-      custom();
-    }
-
-    if (buttonPressed == difficultyGame) {
-      difficulty();
     }
   }
 
