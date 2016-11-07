@@ -302,6 +302,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       rowSize = game.getRows() * 80;
     }
 
+    timer.cancel();
     setSize(colSize, rowSize);
     game.reset();
     remove(gamePanel);
@@ -310,6 +311,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     add(gamePanel);
     repaint();
     revalidate();
+    timer = new Timer();
+    timer.schedule(new Updateclock(), 0, 1000);
   }
 
   /**
@@ -359,6 +362,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         game.setMineCount(99);
         setSize(1200, 800);
       }
+      timer.cancel();
       game.reset();
       remove(gamePanel);
       createButtons();
@@ -366,6 +370,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       add(gamePanel);
       repaint();
       revalidate();
+      timer = new Timer();
+      timer.schedule(new Updateclock(), 0, 1000);
     }
   }
 
@@ -427,6 +433,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               clip.start();
             }
 
+            timer.cancel();
             JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
             losses++;
           } else if (game.getGameStatus() == 1) {
@@ -458,6 +465,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               clip.start();
             }
 
+            timer.cancel();
             JOptionPane.showMessageDialog(null, "Congratulations! You won the game.");
             wins++;
           }
@@ -469,6 +477,9 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
 
       if (buttonPressed == resetButton) {
         game.reset();
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(new Updateclock(), 0, 1000);
         resetButtonText();
         mineFlag = false;
       }
