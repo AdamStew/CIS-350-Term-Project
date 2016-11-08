@@ -109,7 +109,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     winLabel = new JLabel("Wins: " + wins);
     loseLabel = new JLabel("Losses: " + losses);
     mineCountLabel = new JLabel("Mine Count: " + game.mineCount());
-
+    timeLabel = new JLabel("Time: 0:00");
+    
     smiley = new ImageIcon("smiley.gif");
     mine = new ImageIcon("mine.png");
     flag = new ImageIcon("flag.png");
@@ -123,7 +124,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     minesGame.addActionListener(this);
     
     timer = new Timer();
-    timeLabel = new JLabel(" ", JLabel.CENTER);
+    
 
     buttonPanel = new JPanel();
     buttonPanel.add(winLabel);
@@ -151,7 +152,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     setVisible(true);
     setSize(400, 500);
     
-    timer.schedule(new Updateclock(), 0, 1000);
+    
       
   }
 
@@ -319,7 +320,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     revalidate();
     firstMove = true;
     timer = new Timer();
-    timer.schedule(new Updateclock(), 0, 1000);
+    timeLabel.setText("Time: 0:00");
+    mineCountLabel.setText("Mine Count: " + game.mineCount());
   }
 
   /**
@@ -379,7 +381,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       revalidate();
       firstMove = true;
       timer = new Timer();
-      timer.schedule(new Updateclock(), 0, 1000);
+      timeLabel.setText("Time: 0:00");
+      mineCountLabel.setText("Mine Count: " + game.mineCount());
     }
   }
 
@@ -424,6 +427,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               game.getCell(randRow, randCol).setMine(true);
             }
             firstMove = false;
+            timer.schedule(new Updateclock(), 0, 1000);
           }
           game.select(row, col);
           game.flood(row, col);
@@ -523,7 +527,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         firstMove = true;
         mineFlag = false;
         timer = new Timer();
-        timer.schedule(new Updateclock(), 0, 1000);
+        timeLabel.setText("Time: 0:00");
+        mineCountLabel.setText("Mine Count: " + game.mineCount());
         resetButtonText();
       }
 
