@@ -465,8 +465,24 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               clip.start();
             }
 
+            //All of this junk is making the score..
             timer.cancel();
-            JOptionPane.showMessageDialog(null, "Congratulations! You won the game.");
+            String time = String.valueOf(timeLabel.getText());
+            time = time.substring(5).trim();
+            String[] seconds = time.split(":");
+            int timeScore = Integer.parseInt(seconds[0]) * 60 + Integer.parseInt(seconds[1]);
+            int finalScore;
+            if ((game.getRows() * game.getCols()) / 2 >= game.getMineCount()) {
+              finalScore = (game.getRows() * game.getCols() * game.getMineCount() * 1000) 
+                  / timeScore;
+            } else {
+              finalScore = (game.getRows() * game.getCols() * ((game.getRows() * game.getCols())
+                  - game.getMineCount()) * 1000) / timeScore;
+            }
+            
+            
+            JOptionPane.showMessageDialog(null, "Congratulations! You won the game. \n Score : " 
+                  + finalScore);
             wins++;
           }
         }
