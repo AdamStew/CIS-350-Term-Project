@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -69,6 +70,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
   private MineSweeperGame game;
   private JOptionPane diff;
   private static boolean mineFlag;
+  private static boolean firstMove;
   private Timer timer;
   private JLabel timeLabel;
   private JLabel winLabel;
@@ -99,6 +101,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     options.add(minesGame);
 
     setLookAndFeel();
+    
+    firstMove = true;
 
     wins = 0;
     losses = 0;
@@ -146,7 +150,9 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     setJMenuBar(menuBar);
     setVisible(true);
     setSize(400, 500);
+    
     timer.schedule(new Updateclock(), 0, 1000);
+      
   }
 
   public static void main(String[] args) {
@@ -272,7 +278,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         String mines = JOptionPane.showInputDialog(null, "Enter the desired mine count:");
         if (mines != null) {
           if (checkForNumbers(mines) == false || mines.isEmpty()
-              || Integer.parseInt(mines) > (game.getRows() * game.getCols())) {
+              || Integer.parseInt(mines) >= (game.getRows() * game.getCols())) {
             JOptionPane.showMessageDialog(null, "Invalid input. Mine count set to default.");
             game.setMineCount(9);
           } else {
@@ -311,6 +317,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     add(gamePanel);
     repaint();
     revalidate();
+    firstMove = true;
     timer = new Timer();
     timer.schedule(new Updateclock(), 0, 1000);
   }
@@ -370,6 +377,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       add(gamePanel);
       repaint();
       revalidate();
+      firstMove = true;
       timer = new Timer();
       timer.schedule(new Updateclock(), 0, 1000);
     }
@@ -402,6 +410,21 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     for (int row = 0; row < game.getRows(); row++) {
       for (int col = 0; col < game.getCols(); col++) {
         if (board[row][col] == event.getSource() && game.checkFlagged(row, col) == false) {
+          if (firstMove) { //This makes it so you can't hit a mine on your very first pick.
+            if (game.getCell(row, col).isMine()) {
+              game.getCell(row, col).setMine(false);
+              Random randomGenerator = new Random();
+              int randRow = randomGenerator.nextInt(game.getRows());
+              int randCol = randomGenerator.nextInt(game.getCols());
+              while (game.getCell(randRow, randCol).isMine() || (row == randRow 
+                  && col == randCol)) {
+                randRow = randomGenerator.nextInt(game.getRows());
+                randCol = randomGenerator.nextInt(game.getCols());
+              }
+              game.getCell(randRow, randCol).setMine(true);
+            }
+            firstMove = false;
+          }
           game.select(row, col);
           game.flood(row, col);
           if (game.getGameStatus() == 0) {
@@ -472,6 +495,9 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             String[] seconds = time.split(":");
             int timeScore = Integer.parseInt(seconds[0]) * 60 + Integer.parseInt(seconds[1]);
             int finalScore;
+            if (timeScore == 0) {
+              timeScore = 1;
+            }
             if ((game.getRows() * game.getCols()) / 2 >= game.getMineCount()) {
               finalScore = (game.getRows() * game.getCols() * game.getMineCount() * 1000) 
                   / timeScore;
@@ -494,10 +520,11 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       if (buttonPressed == resetButton) {
         game.reset();
         timer.cancel();
+        firstMove = true;
+        mineFlag = false;
         timer = new Timer();
         timer.schedule(new Updateclock(), 0, 1000);
         resetButtonText();
-        mineFlag = false;
       }
 
     }
