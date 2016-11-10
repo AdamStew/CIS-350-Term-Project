@@ -601,6 +601,12 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
 
   }
 
+  /**
+   * Enables right mouse clicks for mine flagging.
+   * 
+   * @param event
+   *          the registered mouse click event
+   */
   public void mousePressed(MouseEvent event) {
     for (int row = 0; row < game.getRows(); row++) {
       for (int col = 0; col < game.getCols(); col++) {
