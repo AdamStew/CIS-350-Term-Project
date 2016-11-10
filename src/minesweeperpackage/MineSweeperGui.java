@@ -425,6 +425,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
                 randCol = randomGenerator.nextInt(game.getCols());
               }
               game.getCell(randRow, randCol).setMine(true);
+              board[row][col].setIcon(null);
             }
             firstMove = false;
             timer.schedule(new Updateclock(), 0, 1000);
