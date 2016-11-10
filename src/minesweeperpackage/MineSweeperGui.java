@@ -68,8 +68,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
   private ImageIcon flag;
   private MineSweeperGame game;
   private JOptionPane diff;
-  private static boolean mineFlag;
-  private static boolean firstMove;
+  private boolean mineFlag;
+  private boolean firstMove;
   private Timer timer;
   private JLabel timeLabel;
   private JLabel winLabel;
