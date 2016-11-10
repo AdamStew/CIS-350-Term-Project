@@ -463,6 +463,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         game.reset();
         resetButtonText();
         mineFlag = false;
+
       }
 
     }
