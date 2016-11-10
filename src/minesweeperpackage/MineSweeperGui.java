@@ -2,8 +2,8 @@ package minesweeperpackage;
 
 import java.awt.BorderLayout;
 
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,10 @@ import java.awt.event.MouseListener;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -34,8 +38,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 
-import java.util.Timer;
-
 /**
  * @author Kate McGowan, Adam Stewart, Sierra Ellison
  * 
@@ -56,22 +58,25 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
   private JMenuItem quitGame;
   private JMenuItem minesGame;
   private JButton resetButton;
-  private JButton minesButton;
   private JPanel buttonPanel;
   private JPanel gamePanel;
+  private JPanel mineCountPanel;
   private JPanel timerPanel;
+  private JPanel botPanel;
   private ImageIcon smiley;
   private ImageIcon mine;
   private ImageIcon flag;
   private MineSweeperGame game;
   private JOptionPane diff;
   private static boolean mineFlag;
+  private static boolean firstMove;
+  private Timer timer;
+  private JLabel timeLabel;
   private JLabel winLabel;
   private JLabel loseLabel;
   private JLabel mineCountLabel;
   private int wins;
   private int losses;
-  private Timer time;
 
   /**
    * Constructor initializing game and GUI.
@@ -96,11 +101,14 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
 
     setLookAndFeel();
 
+    firstMove = true;
+
     wins = 0;
     losses = 0;
     winLabel = new JLabel("Wins: " + wins);
     loseLabel = new JLabel("Losses: " + losses);
     mineCountLabel = new JLabel("Mine Count: " + game.mineCount());
+    timeLabel = new JLabel("Time: 0:00");
 
     smiley = new ImageIcon("smiley.gif");
     mine = new ImageIcon("mine.png");
@@ -109,36 +117,38 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     resetButton = new JButton(smiley);
     resetButton.addActionListener(this);
 
-    // minesButton = new JButton("Mines");
-    // minesButton.addActionListener(this);
-    // minesButton.setFont(new Font("Arial", Font.PLAIN, 10));
-
     difficultyGame.addActionListener(this);
     customGame.addActionListener(this);
     quitGame.addActionListener(this);
     minesGame.addActionListener(this);
 
+    timer = new Timer();
+
     buttonPanel = new JPanel();
     buttonPanel.add(winLabel);
     buttonPanel.add(resetButton);
     buttonPanel.add(loseLabel);
-    // buttonPanel.add(minesButton);
 
-    // board = new JButton[game.getRows()][game.getCols()];
+    mineCountPanel = new JPanel();
+    mineCountPanel.add(mineCountLabel);
+
+    timerPanel = new JPanel();
+    timerPanel.add(timeLabel);
+
+    botPanel = new JPanel();
+    botPanel.add(mineCountPanel, BorderLayout.WEST);
+    botPanel.add(timerPanel, BorderLayout.EAST);
+
     createButtons();
     setLayout(new BorderLayout(0, 0));
-    add(mineCountLabel, BorderLayout.SOUTH);
+    add(botPanel, BorderLayout.SOUTH);
     add(buttonPanel, BorderLayout.NORTH);
     add(gamePanel, BorderLayout.CENTER);
-
-    time = new Timer("time");
-    // timerPanel.action(time);
-
-    // setResizable(true);
 
     setJMenuBar(menuBar);
     setVisible(true);
     setSize(400, 500);
+
   }
 
   public static void main(String[] args) {
@@ -264,7 +274,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         String mines = JOptionPane.showInputDialog(null, "Enter the desired mine count:");
         if (mines != null) {
           if (checkForNumbers(mines) == false || mines.isEmpty()
-              || Integer.parseInt(mines) > (game.getRows() * game.getCols())) {
+              || Integer.parseInt(mines) >= (game.getRows() * game.getCols())) {
             JOptionPane.showMessageDialog(null, "Invalid input. Mine count set to default.");
             game.setMineCount(9);
           } else {
@@ -294,6 +304,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       rowSize = game.getRows() * 80;
     }
 
+    timer.cancel();
     setSize(colSize, rowSize);
     game.reset();
     remove(gamePanel);
@@ -302,6 +313,10 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     add(gamePanel);
     repaint();
     revalidate();
+    firstMove = true;
+    timer = new Timer();
+    timeLabel.setText("Time: 0:00");
+    mineCountLabel.setText("Mine Count: " + game.mineCount());
   }
 
   /**
@@ -351,6 +366,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         game.setMineCount(99);
         setSize(1200, 800);
       }
+      timer.cancel();
       game.reset();
       remove(gamePanel);
       createButtons();
@@ -358,6 +374,10 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       add(gamePanel);
       repaint();
       revalidate();
+      firstMove = true;
+      timer = new Timer();
+      timeLabel.setText("Time: 0:00");
+      mineCountLabel.setText("Mine Count: " + game.mineCount());
     }
   }
 
@@ -388,6 +408,26 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     for (int row = 0; row < game.getRows(); row++) {
       for (int col = 0; col < game.getCols(); col++) {
         if (board[row][col] == event.getSource() && game.checkFlagged(row, col) == false) {
+          if (firstMove) { // This makes it so you can't hit a mine on your very first pick.
+            if (game.getCell(row, col).isMine()) {
+              game.getCell(row, col).setMine(false);
+              Random randomGenerator = new Random();
+              int randRow = randomGenerator.nextInt(game.getRows());
+              int randCol = randomGenerator.nextInt(game.getCols());
+              while (game.getCell(randRow, randCol).isMine()
+                  || (row == randRow && col == randCol)) {
+                randRow = randomGenerator.nextInt(game.getRows());
+                randCol = randomGenerator.nextInt(game.getCols());
+              }
+              game.getCell(randRow, randCol).setMine(true);
+              board[row][col].setIcon(null);
+              if (mineFlag) {
+                board[randRow][randCol].setIcon(mine);
+              }
+            }
+            firstMove = false;
+            timer.schedule(new Updateclock(), 0, 1000);
+          }
           game.select(row, col);
           game.flood(row, col);
           if (game.getGameStatus() == 0) {
@@ -419,6 +459,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               clip.start();
             }
 
+            timer.cancel();
             JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
             losses++;
           } else if (game.getGameStatus() == 1) {
@@ -450,7 +491,26 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               clip.start();
             }
 
-            JOptionPane.showMessageDialog(null, "Congratulations! You won the game.");
+            // All of this junk is making the score..
+            timer.cancel();
+            String time = String.valueOf(timeLabel.getText());
+            time = time.substring(5).trim();
+            String[] seconds = time.split(":");
+            int timeScore = Integer.parseInt(seconds[0]) * 60 + Integer.parseInt(seconds[1]);
+            int finalScore;
+            if (timeScore == 0) {
+              timeScore = 1;
+            }
+            if ((game.getRows() * game.getCols()) / 2 >= game.getMineCount()) {
+              finalScore = (game.getRows() * game.getCols() * game.getMineCount() * 1000)
+                  / timeScore;
+            } else {
+              finalScore = (game.getRows() * game.getCols()
+                  * ((game.getRows() * game.getCols()) - game.getMineCount()) * 1000) / timeScore;
+            }
+
+            JOptionPane.showMessageDialog(null,
+                "Congratulations! You won the game. \n Score : " + finalScore);
             wins++;
           }
         }
@@ -461,9 +521,14 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
 
       if (buttonPressed == resetButton) {
         game.reset();
-        resetButtonText();
+        timer.cancel();
+        firstMove = true;
         mineFlag = false;
 
+        timer = new Timer();
+        timeLabel.setText("Time: 0:00");
+        mineCountLabel.setText("Mine Count: " + game.mineCount());
+        resetButtonText();
       }
 
     }
@@ -556,4 +621,25 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     }
   }
 
+  private class Updateclock extends TimerTask {
+
+    private int seconds = 0;
+    private int minutes = 0;
+
+    @Override
+    public void run() {
+      EventQueue.invokeLater(new Runnable() {
+
+        @Override
+        public void run() {
+          String formatted = String.format("%02d", seconds++);
+          timeLabel.setText("Time: " + minutes + ":" + formatted);
+          if (seconds > 59) {
+            minutes++;
+            seconds = 0;
+          }
+        }
+      });
+    }
+  }
 }
