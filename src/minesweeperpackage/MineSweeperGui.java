@@ -247,12 +247,12 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
    * A method that allows the user to create a custom game.
    */
   public void custom() {
-    String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows (Min. 3):");
+    String row = JOptionPane.showInputDialog(null, "Enter the desired number of rows (4-30):");
     int oldRow = game.getRows();
     int oldCol = game.getCols();
 
     if (row != null) {
-      if (checkForNumbers(row) == false || row.isEmpty() || Integer.parseInt(row) < 3
+      if (checkForNumbers(row) == false || row.isEmpty() || Integer.parseInt(row) < 4
           || Integer.parseInt(row) > 30) {
         JOptionPane.showMessageDialog(null, "Invalid input. Rows set to default.");
         game.setRows(9);
@@ -260,10 +260,9 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         game.setRows(Integer.parseInt(row));
       }
 
-      String col = JOptionPane.showInputDialog(null,
-          "Enter the desired number of columns (Min. 3):");
+      String col = JOptionPane.showInputDialog(null, "Enter the desired number of columns (4-30):");
       if (col != null) {
-        if (checkForNumbers(col) == false || col.isEmpty() || Integer.parseInt(col) < 3
+        if (checkForNumbers(col) == false || col.isEmpty() || Integer.parseInt(col) < 4
             || Integer.parseInt(col) > 30) {
           JOptionPane.showMessageDialog(null, "Invalid input. Columns set to default.");
           game.setCols(9);
