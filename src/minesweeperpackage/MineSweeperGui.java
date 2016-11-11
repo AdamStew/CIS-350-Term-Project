@@ -458,6 +458,12 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               clip.start();
             }
 
+            // disabling the buttons
+            for (int i = 0; i < game.getCols(); i++) {
+              for (int j = 0; j < game.getRows(); j++) {
+                game.getCell(i, j).setExposed(true);
+              }
+            }
             timer.cancel();
             JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
             losses++;
@@ -490,6 +496,12 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               clip.start();
             }
 
+            // disabling the buttons
+            for (int i = 0; i < game.getCols(); i++) {
+              for (int j = 0; j < game.getRows(); j++) {
+                game.getCell(i, j).setExposed(true);
+              }
+            }
             // All of this junk is making the score..
             timer.cancel();
             String time = String.valueOf(timeLabel.getText());
