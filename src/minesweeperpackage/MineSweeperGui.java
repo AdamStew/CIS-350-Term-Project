@@ -467,7 +467,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             }
             timer.cancel();
             JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
-            //board[row][col].setBackground(Color.PINK);
+            board[row][col].setBackground(Color.PINK);
             losses++;
           } else if (game.getGameStatus() == 1) {
             // Winning Sound Effect
@@ -537,6 +537,12 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         timer.cancel();
         firstMove = true;
         mineFlag = false;
+        
+        for (int i = 0; i < game.getRows(); i++) {
+          for (int j = 0; j < game.getCols(); j++) {
+            board[i][j].setBackground(null);
+          }
+        }
 
         timer = new Timer();
         timeLabel.setText("Time: 0:00");
