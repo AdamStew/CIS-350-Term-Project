@@ -7,14 +7,22 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -58,6 +66,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
   private JMenuItem difficultyGame;
   private JMenuItem quitGame;
   private JMenuItem minesGame;
+  private JMenuItem ranksGame;
   private JButton resetButton;
   private JPanel buttonPanel;
   private JPanel gamePanel;
@@ -93,12 +102,15 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     customGame = new JMenuItem("Custom Game");
     quitGame = new JMenuItem("Quit Game");
     minesGame = new JMenuItem("Toggle Mines");
+    ranksGame = new JMenuItem("Show Leaderboard");
+    
     menuBar.add(menu);
     menu.add(difficultyGame);
     menu.add(customGame);
     menu.add(quitGame);
     menuBar.add(options);
     options.add(minesGame);
+    options.add(ranksGame);
 
     setLookAndFeel();
 
@@ -122,6 +134,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     customGame.addActionListener(this);
     quitGame.addActionListener(this);
     minesGame.addActionListener(this);
+    ranksGame.addActionListener(this);
 
     timer = new Timer();
 
@@ -154,6 +167,39 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
 
   public static void main(String[] args) {
     new MineSweeperGui();
+    
+    File file = new File("Leaders.txt");
+    //Check to see if a leaderboard file exists.
+    if (file.exists() && !file.isDirectory()) {
+      //do nothing
+    } else {
+      //if it doesn't exist, create a default leaderboard.
+      try {
+        file.createNewFile();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      
+      DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+      Date date = new Date();
+      
+      try {
+        PrintWriter writer = new PrintWriter(file, "UTF-8");
+        writer.println("Sally                01000  " + dateFormat.format(date));
+        writer.println("Jon                  00800  " + dateFormat.format(date));
+        writer.println("Willy                00600  " + dateFormat.format(date));
+        writer.println("Pat                  00400  " + dateFormat.format(date));
+        writer.println("Rick                 00200  " + dateFormat.format(date));
+        writer.close();
+      } catch (FileNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } catch (UnsupportedEncodingException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
   }
 
   /**
@@ -399,6 +445,149 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     }
     return true;
   }
+  
+  private String displayRanks(File file) {
+    String result = "";
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(file));
+      String line;
+      try {
+        while ((line = br.readLine()) != null) {
+          result = result + line + "\n";
+        }
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
+    return result;
+  }
+  
+  private void updateRanks(File file, int finalScore) { 
+    
+    boolean broke = false;
+    int rank = 1;
+    String name = "";
+    String stringScore = "";
+    
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        line = line.substring(21, 26);
+        if (finalScore > Integer.parseInt(line)) {
+          stringScore = String.format("%05d", finalScore);
+          name = JOptionPane.showInputDialog(null, "Congrats on the high score! Enter "
+              + "your name (max 20 charcters).");
+          name = name.trim();
+          if (name.length() > 20) {
+            name = name.substring(0, 20) + " ";
+          } else {
+            while (name.length() <= 20) {
+              name = name + " ";
+            }
+          }
+          broke = true;
+          break;
+        }
+        rank++;
+      }
+    } catch (NumberFormatException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (HeadlessException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    
+    if (broke) {
+      int i = 0;
+      String rankA = "";
+      String rankB = "";
+      String rankC = "";
+      String rankD = "";
+      String line;
+      
+      try {
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        
+        try {
+          while ((line = br.readLine()) != null) {
+            if (i == 0) {
+              rankA = line;
+            } else if (i == 1) {
+              rankB = line;
+            } else if (i == 2) {
+              rankC = line;
+            } else if (i == 3) {
+              rankD = line;
+            }
+            i++;
+          }
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      } catch (FileNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      
+      PrintWriter writer;
+      try {
+        writer = new PrintWriter(file, "UTF-8");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        
+        if (rank == 1) {
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(rankA);
+          writer.println(rankB);
+          writer.println(rankC);
+          writer.println(rankD);
+        } else if (rank == 2) {
+          writer.println(rankA);
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(rankB);
+          writer.println(rankC);
+          writer.println(rankD);
+        } else if (rank == 3) {
+          writer.println(rankA);
+          writer.println(rankB);
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(rankC);
+          writer.println(rankD);
+        } else if (rank == 4) {
+          writer.println(rankA);
+          writer.println(rankB);
+          writer.println(rankC);
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(rankD);
+        } else if (rank == 5) {
+          writer.println(rankA);
+          writer.println(rankB);
+          writer.println(rankC);
+          writer.println(rankD);
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
+        }
+        writer.close();
+      } catch (FileNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      } catch (UnsupportedEncodingException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      
+    }
+    
+  }
 
   @Override
   public void actionPerformed(ActionEvent event) {
@@ -525,6 +714,10 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             JOptionPane.showMessageDialog(null,
                 "Congratulations! You won the game. \n Score : " + finalScore);
             wins++;
+           
+            File file = new File("Leaders.txt");
+            updateRanks(file, finalScore);
+            
           }
         }
       }
@@ -595,7 +788,14 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       updateLabels();
       display();
     }
+    
+    if (buttonPressed == ranksGame) {
+      File file = new File("Leaders.txt");
+      String leaderboard = displayRanks(file);
+      JOptionPane.showMessageDialog(null, leaderboard);
+    }
   }
+    
 
   @Override
   public void mouseClicked(MouseEvent event) {
