@@ -164,7 +164,13 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     setSize(400, 500);
 
   }
-
+  
+  /**
+   * Runs the application.
+   * @param args
+   *          argument that runs the application.
+   */
+  
   public static void main(String[] args) {
     new MineSweeperGui();
     
@@ -176,9 +182,9 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       //if it doesn't exist, create a default leaderboard.
       try {
         file.createNewFile();
-      } catch (IOException e) {
+      } catch (IOException except) {
         // TODO Auto-generated catch block
-        e.printStackTrace();
+        except.printStackTrace();
       }
       
       DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -192,12 +198,12 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         writer.println("Pat                  00400  " + dateFormat.format(date));
         writer.println("Rick                 00200  " + dateFormat.format(date));
         writer.close();
-      } catch (FileNotFoundException e) {
+      } catch (FileNotFoundException except) {
         // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (UnsupportedEncodingException e) {
+        except.printStackTrace();
+      } catch (UnsupportedEncodingException except) {
         // TODO Auto-generated catch block
-        e.printStackTrace();
+        except.printStackTrace();
       }
     }
   }
@@ -447,42 +453,43 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
   }
   
   private String displayRanks(File file) {
-    String result = "";
+    String result = ""; //Result of our leaderboard.
     try {
       BufferedReader br = new BufferedReader(new FileReader(file));
       String line;
       try {
         while ((line = br.readLine()) != null) {
-          result = result + line + "\n";
+          result = result + line + "\n"; //Puts each rank into the result.
         }
-      } catch (IOException e) {
+      } catch (IOException except) {
         // TODO Auto-generated catch block
-        e.printStackTrace();
+        except.printStackTrace();
       }
-    } catch (FileNotFoundException e) {
+    } catch (FileNotFoundException except) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
+      except.printStackTrace();
     }
     
-    return result;
+    return result; //Returns our complete ranking.
   }
   
   private void updateRanks(File file, int finalScore) { 
     
-    boolean broke = false;
-    int rank = 1;
-    String name = "";
-    String stringScore = "";
+    boolean broke = false; //Will check to see if we broke our loop.
+    int rank = 1; //Will keep track of what rank we are, if we are a high score.
+    String name = ""; //This will hold our high score name.
+    String stringScore = ""; //This will hold our final score, after it's formatted.
     
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = br.readLine()) != null) {
-        line = line.substring(21, 26);
-        if (finalScore > Integer.parseInt(line)) {
+        line = line.substring(21, 26); //Substring to the scores of each rank, so we can compare.
+        if (finalScore > Integer.parseInt(line)) { //Goes in, if we have a better score.
           stringScore = String.format("%05d", finalScore);
           name = JOptionPane.showInputDialog(null, "Congrats on the high score! Enter "
               + "your name (max 20 charcters).");
           name = name.trim();
+          //This will format the name so that it lines up with the others in a text file.
           if (name.length() > 20) {
             name = name.substring(0, 20) + " ";
           } else {
@@ -490,24 +497,26 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
               name = name + " ";
             }
           }
+          //Once we found a high score, we want to leave.
           broke = true;
           break;
         }
+        //If we didn't find a score yet, check to see if we're a rank lower.
         rank++;
       }
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException except) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (HeadlessException e) {
+      except.printStackTrace();
+    } catch (HeadlessException except) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (IOException e) {
+      except.printStackTrace();
+    } catch (IOException except) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
+      except.printStackTrace();
     }
-    
+    //If we found a high score, we want to collect the other four scores we're keeping.
     if (broke) {
-      int i = 0;
+      int index = 0;
       String rankA = "";
       String rankB = "";
       String rankC = "";
@@ -518,25 +527,26 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         BufferedReader br = new BufferedReader(new FileReader(file));
         
         try {
+          //Collecting the other four scores.
           while ((line = br.readLine()) != null) {
-            if (i == 0) {
+            if (index == 0) {
               rankA = line;
-            } else if (i == 1) {
+            } else if (index == 1) {
               rankB = line;
-            } else if (i == 2) {
+            } else if (index == 2) {
               rankC = line;
-            } else if (i == 3) {
+            } else if (index == 3) {
               rankD = line;
             }
-            i++;
+            index++;
           }
-        } catch (IOException e) {
+        } catch (IOException except) {
           // TODO Auto-generated catch block
-          e.printStackTrace();
+          except.printStackTrace();
         }
-      } catch (FileNotFoundException e) {
+      } catch (FileNotFoundException except) {
         // TODO Auto-generated catch block
-        e.printStackTrace();
+        except.printStackTrace();
       }
       
       PrintWriter writer;
@@ -545,31 +555,32 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         
+        //If we have the best rank, we'll put it on the top.
         if (rank == 1) {
           writer.println(name + stringScore + "  " + dateFormat.format(date));
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
           writer.println(rankD);
-        } else if (rank == 2) {
+        } else if (rank == 2) { //Second best, second from the top.
           writer.println(rankA);
           writer.println(name + stringScore + "  " + dateFormat.format(date));
           writer.println(rankB);
           writer.println(rankC);
           writer.println(rankD);
-        } else if (rank == 3) {
+        } else if (rank == 3) { //Third best, middle rank.
           writer.println(rankA);
           writer.println(rankB);
           writer.println(name + stringScore + "  " + dateFormat.format(date));
           writer.println(rankC);
           writer.println(rankD);
-        } else if (rank == 4) {
+        } else if (rank == 4) { //Forth best, second from the bottom.
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
           writer.println(name + stringScore + "  " + dateFormat.format(date));
           writer.println(rankD);
-        } else if (rank == 5) {
+        } else if (rank == 5) { //Worst score goes on the very bottom.
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
@@ -577,12 +588,12 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
           writer.println(name + stringScore + "  " + dateFormat.format(date));
         }
         writer.close();
-      } catch (FileNotFoundException e) {
+      } catch (FileNotFoundException except) {
         // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (UnsupportedEncodingException e) {
+        except.printStackTrace();
+      } catch (UnsupportedEncodingException except) {
         // TODO Auto-generated catch block
-        e.printStackTrace();
+        except.printStackTrace();
       }
       
     }
