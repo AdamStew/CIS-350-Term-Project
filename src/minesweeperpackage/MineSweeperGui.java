@@ -192,11 +192,11 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       
       try {
         PrintWriter writer = new PrintWriter(file, "UTF-8");
-        writer.println("Sally                01000  " + dateFormat.format(date));
-        writer.println("Jon                  00800  " + dateFormat.format(date));
-        writer.println("Willy                00600  " + dateFormat.format(date));
-        writer.println("Pat                  00400  " + dateFormat.format(date));
-        writer.println("Rick                 00200  " + dateFormat.format(date));
+        writer.println("Sally______________| 01000 | " + dateFormat.format(date));
+        writer.println("Jon________________| 00800 | " + dateFormat.format(date));
+        writer.println("Willy______________| 00600 | " + dateFormat.format(date));
+        writer.println("Pat________________| 00400 | " + dateFormat.format(date));
+        writer.println("Rick_______________| 00200 | " + dateFormat.format(date));
         writer.close();
       } catch (FileNotFoundException except) {
         // TODO Auto-generated catch block
@@ -491,11 +491,12 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
           name = name.trim();
           //This will format the name so that it lines up with the others in a text file.
           if (name.length() > 20) {
-            name = name.substring(0, 20) + " ";
+            name = name.substring(0, 19) + " | ";
           } else {
-            while (name.length() <= 20) {
-              name = name + " ";
+            while (name.length() <= 18) {
+              name = name + "_";
             }
+            name = name + "| ";
           }
           //Once we found a high score, we want to leave.
           broke = true;
@@ -557,35 +558,35 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         
         //If we have the best rank, we'll put it on the top.
         if (rank == 1) {
-          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(name + stringScore + " | " + dateFormat.format(date));
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
           writer.println(rankD);
         } else if (rank == 2) { //Second best, second from the top.
           writer.println(rankA);
-          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(name + stringScore + " | " + dateFormat.format(date));
           writer.println(rankB);
           writer.println(rankC);
           writer.println(rankD);
         } else if (rank == 3) { //Third best, middle rank.
           writer.println(rankA);
           writer.println(rankB);
-          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(name + stringScore + " | " + dateFormat.format(date));
           writer.println(rankC);
           writer.println(rankD);
         } else if (rank == 4) { //Forth best, second from the bottom.
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
-          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(name + stringScore + " | " + dateFormat.format(date));
           writer.println(rankD);
         } else if (rank == 5) { //Worst score goes on the very bottom.
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
           writer.println(rankD);
-          writer.println(name + stringScore + "  " + dateFormat.format(date));
+          writer.println(name + stringScore + " | " + dateFormat.format(date));
         }
         writer.close();
       } catch (FileNotFoundException except) {
