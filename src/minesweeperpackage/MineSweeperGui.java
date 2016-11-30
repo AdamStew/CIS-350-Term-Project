@@ -192,11 +192,11 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       
       try {
         PrintWriter writer = new PrintWriter(file, "UTF-8");
-        writer.println("Sally______________| 01000 | " + dateFormat.format(date));
-        writer.println("Jon________________| 00800 | " + dateFormat.format(date));
-        writer.println("Willy______________| 00600 | " + dateFormat.format(date));
-        writer.println("Pat________________| 00400 | " + dateFormat.format(date));
-        writer.println("Rick_______________| 00200 | " + dateFormat.format(date));
+        writer.println("Sally                01000  " + dateFormat.format(date));
+        writer.println("Jon                  00800  " + dateFormat.format(date));
+        writer.println("Willy                00600  " + dateFormat.format(date));
+        writer.println("Pat                  00400  " + dateFormat.format(date));
+        writer.println("Rick                 00200  " + dateFormat.format(date));
         writer.close();
       } catch (FileNotFoundException except) {
         // TODO Auto-generated catch block
@@ -452,14 +452,19 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     return true;
   }
   
-  private String displayRanks(File file) {
-    String result = ""; //Result of our leaderboard.
+  private String[] displayRanks(File file) {
+    String[] results = new String[3];
+    String names = "NAME: \n"; //Result of our leaderboard, separated.
+    String scores = "SCORE: \n";
+    String dates = "DATE: \n";
     try {
       BufferedReader br = new BufferedReader(new FileReader(file));
       String line;
       try {
-        while ((line = br.readLine()) != null) {
-          result = result + line + "\n"; //Puts each rank into the result.
+        while ((line = br.readLine()) != null) { //Collects the names, scores, and dates separately.
+          names = names + line.substring(0,21) + "\n"; 
+          scores = scores + line.substring(21, 26) + "\n";
+          dates = dates + line.substring(28, 47) + "\n";
         }
       } catch (IOException except) {
         // TODO Auto-generated catch block
@@ -469,8 +474,11 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       // TODO Auto-generated catch block
       except.printStackTrace();
     }
+    results[0] = names;
+    results[1] = scores;
+    results[2] = dates;
     
-    return result; //Returns our complete ranking.
+    return results; //Returns our complete ranking.
   }
   
   private void updateRanks(File file, int finalScore) { 
@@ -491,12 +499,11 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
           name = name.trim();
           //This will format the name so that it lines up with the others in a text file.
           if (name.length() > 20) {
-            name = name.substring(0, 19) + " | ";
+            name = name.substring(0, 20) + " ";
           } else {
-            while (name.length() <= 18) {
-              name = name + "_";
+            while (name.length() <= 20) {
+              name = name + " ";
             }
-            name = name + "| ";
           }
           //Once we found a high score, we want to leave.
           broke = true;
@@ -558,35 +565,35 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         
         //If we have the best rank, we'll put it on the top.
         if (rank == 1) {
-          writer.println(name + stringScore + " | " + dateFormat.format(date));
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
           writer.println(rankD);
         } else if (rank == 2) { //Second best, second from the top.
           writer.println(rankA);
-          writer.println(name + stringScore + " | " + dateFormat.format(date));
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
           writer.println(rankB);
           writer.println(rankC);
           writer.println(rankD);
         } else if (rank == 3) { //Third best, middle rank.
           writer.println(rankA);
           writer.println(rankB);
-          writer.println(name + stringScore + " | " + dateFormat.format(date));
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
           writer.println(rankC);
           writer.println(rankD);
         } else if (rank == 4) { //Forth best, second from the bottom.
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
-          writer.println(name + stringScore + " | " + dateFormat.format(date));
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
           writer.println(rankD);
         } else if (rank == 5) { //Worst score goes on the very bottom.
           writer.println(rankA);
           writer.println(rankB);
           writer.println(rankC);
           writer.println(rankD);
-          writer.println(name + stringScore + " | " + dateFormat.format(date));
+          writer.println(name + stringScore + "  " + dateFormat.format(date));
         }
         writer.close();
       } catch (FileNotFoundException except) {
@@ -803,8 +810,25 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     
     if (buttonPressed == ranksGame) {
       File file = new File("Leaders.txt");
-      String leaderboard = displayRanks(file);
-      JOptionPane.showMessageDialog(null, leaderboard);
+      String[] leaderboard = displayRanks(file);
+      JLabel names = new JLabel();
+      JLabel scores = new JLabel();
+      JLabel dates = new JLabel();
+      
+      //Have to do some gross HTML stuff, because that's how JLabels work apparently.
+      names.setText("<html>" + leaderboard[0].replaceAll("<","&lt;").replaceAll(">", "&gt;")
+          .replaceAll("\n", "<br/>") + "</html>");
+      scores.setText("<html>" + leaderboard[1].replaceAll("<","&lt;").replaceAll(">", "&gt;")
+          .replaceAll("\n", "<br/>") + "</html>");
+      dates.setText("<html>" + leaderboard[2].replaceAll("<","&lt;").replaceAll(">", "&gt;")
+          .replaceAll("\n", "<br/>") + "</html>");
+      
+      JPanel leadPanel = new JPanel();
+      leadPanel.add(names);
+      leadPanel.add(scores);
+      leadPanel.add(dates);
+      
+      JOptionPane.showMessageDialog(null, leadPanel);
     }
   }
     
