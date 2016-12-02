@@ -187,7 +187,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
         except.printStackTrace();
       }
       
-      DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+      DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
       Date date = new Date();
       
       try {
@@ -573,7 +573,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       PrintWriter writer;
       try {
         writer = new PrintWriter(file, "UTF-8");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Date date = new Date();
         
         //If we have the best rank, we'll put it on the top.
@@ -815,7 +815,11 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
           for (int col2 = 0; col2 < game.getCols(); col2++) {
             cell = game.getCell(row2, col2);
             if (cell.isMine()) {
-              board[row2][col2].setIcon(null);
+              if (cell.isFlagged()) {
+                board[row2][col2].setIcon(flag);
+              } else {
+                board[row2][col2].setIcon(null);
+              }
             }
           }
         }
