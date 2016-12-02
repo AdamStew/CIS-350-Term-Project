@@ -452,8 +452,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     return true;
   }
   
-  private String[] displayRanks(File file) {
-    String[] results = new String[3];
+  private void displayRanks(File file) {
     String names = "NAME: \n"; //Result of our leaderboard, separated.
     String scores = "SCORE: \n";
     String dates = "DATE: \n";
@@ -474,11 +473,25 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
       // TODO Auto-generated catch block
       except.printStackTrace();
     }
-    results[0] = names;
-    results[1] = scores;
-    results[2] = dates;
     
-    return results; //Returns our complete ranking.
+    JLabel nameLabel = new JLabel();
+    JLabel scoreLabel = new JLabel();
+    JLabel dateLabel = new JLabel();
+    
+    //Have to do some gross HTML stuff, because that's how JLabels work apparently.
+    nameLabel.setText("<html>" + names.replaceAll("<","&lt;").replaceAll(">", "&gt;")
+        .replaceAll("\n", "<br/>") + "</html>");
+    scoreLabel.setText("<html>" + scores.replaceAll("<","&lt;").replaceAll(">", "&gt;")
+        .replaceAll("\n", "<br/>") + "</html>");
+    dateLabel.setText("<html>" + dates.replaceAll("<","&lt;").replaceAll(">", "&gt;")
+        .replaceAll("\n", "<br/>") + "</html>");
+    
+    JPanel leadPanel = new JPanel();
+    leadPanel.add(nameLabel);
+    leadPanel.add(scoreLabel);
+    leadPanel.add(dateLabel);
+    
+    JOptionPane.showMessageDialog(null, leadPanel);
   }
   
   private void updateRanks(File file, int finalScore) { 
@@ -666,15 +679,17 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             if (clip != null) {
               clip.start();
             }
-
+            timer.cancel();
+            JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
             // disabling the buttons
-            for (int i = 0; i < game.getCols(); i++) {
-              for (int j = 0; j < game.getRows(); j++) {
+            for (int i = 0; i < game.getRows(); i++) {
+              for (int j = 0; j < game.getCols(); j++) {
+                if (game.getCell(i,  j).isFlagged() == true) {
+                  board[i][j].setIcon(null);
+                }
                 game.getCell(i, j).setExposed(true);
               }
             }
-            timer.cancel();
-            JOptionPane.showMessageDialog(null, "You hit a mine. Game Over.");
             board[row][col].setBackground(Color.PINK);
             losses++;
           } else if (game.getGameStatus() == 1) {
@@ -725,6 +740,8 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
             if ((game.getRows() * game.getCols()) / 2 >= game.getMineCount()) {
               finalScore = (game.getRows() * game.getCols() * game.getMineCount() * 1000)
                   / timeScore;
+            } else if ((game.getRows() * game.getCols() - 1) == game.getMineCount()) {
+              finalScore = 10000; //This way, if the user "auto-wins" they don't get a great score.
             } else {
               finalScore = (game.getRows() * game.getCols()
                   * ((game.getRows() * game.getCols()) - game.getMineCount()) * 1000) / timeScore;
@@ -736,7 +753,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
            
             File file = new File("Leaders.txt");
             updateRanks(file, finalScore);
-            
+            displayRanks(file);
           }
         }
       }
@@ -810,25 +827,7 @@ public class MineSweeperGui extends JFrame implements ActionListener, MouseListe
     
     if (buttonPressed == ranksGame) {
       File file = new File("Leaders.txt");
-      String[] leaderboard = displayRanks(file);
-      JLabel names = new JLabel();
-      JLabel scores = new JLabel();
-      JLabel dates = new JLabel();
-      
-      //Have to do some gross HTML stuff, because that's how JLabels work apparently.
-      names.setText("<html>" + leaderboard[0].replaceAll("<","&lt;").replaceAll(">", "&gt;")
-          .replaceAll("\n", "<br/>") + "</html>");
-      scores.setText("<html>" + leaderboard[1].replaceAll("<","&lt;").replaceAll(">", "&gt;")
-          .replaceAll("\n", "<br/>") + "</html>");
-      dates.setText("<html>" + leaderboard[2].replaceAll("<","&lt;").replaceAll(">", "&gt;")
-          .replaceAll("\n", "<br/>") + "</html>");
-      
-      JPanel leadPanel = new JPanel();
-      leadPanel.add(names);
-      leadPanel.add(scores);
-      leadPanel.add(dates);
-      
-      JOptionPane.showMessageDialog(null, leadPanel);
+      displayRanks(file);
     }
   }
     
